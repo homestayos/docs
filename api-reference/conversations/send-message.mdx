@@ -21,7 +21,7 @@ Send a message in an existing conversation.
 <CodeGroup>
 
 ```bash cURL
-curl -X POST http://localhost:8000/api/conversations/1/messages \
+curl -X POST https://office.homestayos.com/api/conversations/1/messages \
   -H "Authorization: Bearer {your_token}" \
   -H "Content-Type: application/json" \
   -d '{
@@ -30,7 +30,7 @@ curl -X POST http://localhost:8000/api/conversations/1/messages \
 ```
 
 ```javascript JavaScript
-const response = await fetch('http://localhost:8000/api/conversations/1/messages', {
+const response = await fetch('https://office.homestayos.com/api/conversations/1/messages', {
   method: 'POST',
   headers: {
     'Authorization': 'Bearer {your_token}',
@@ -48,7 +48,7 @@ const data = await response.json();
 import requests
 
 response = requests.post(
-    'http://localhost:8000/api/conversations/1/messages',
+    'https://office.homestayos.com/api/conversations/1/messages',
     headers={
         'Authorization': 'Bearer {your_token}',
         'Content-Type': 'application/json',

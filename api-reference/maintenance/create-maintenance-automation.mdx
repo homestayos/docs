@@ -93,7 +93,7 @@ Returns the created maintenance automation.
 <CodeGroup>
 
 ```bash cURL
-curl -X POST http://localhost:8000/api/maintenance-automations \
+curl -X POST https://office.homestayos.com/api/maintenance-automations \
   -H "Authorization: Bearer {your_token}" \
   -H "Content-Type: application/json" \
   -d '{
@@ -113,7 +113,7 @@ curl -X POST http://localhost:8000/api/maintenance-automations \
 ```
 
 ```javascript JavaScript
-const response = await fetch('http://localhost:8000/api/maintenance-automations', {
+const response = await fetch('https://office.homestayos.com/api/maintenance-automations', {
   method: 'POST',
   headers: {
     'Authorization': 'Bearer {your_token}',
@@ -142,7 +142,7 @@ const data = await response.json();
 import requests
 
 response = requests.post(
-    'http://localhost:8000/api/maintenance-automations',
+    'https://office.homestayos.com/api/maintenance-automations',
     headers={
         'Authorization': 'Bearer {your_token}',
         'Content-Type': 'application/json',

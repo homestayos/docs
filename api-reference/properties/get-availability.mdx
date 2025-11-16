@@ -43,13 +43,13 @@ Retrieve availability and pricing information for a property within a date range
 <CodeGroup>
 
 ```bash cURL
-curl -X GET "http://localhost:8000/api/properties/1/availabilities?start_date=2024-01-01&end_date=2024-01-31" \
+curl -X GET "https://office.homestayos.com/api/properties/1/availabilities?start_date=2024-01-01&end_date=2024-01-31" \
   -H "Authorization: Bearer {your_token}"
 ```
 
 ```javascript JavaScript
 const response = await fetch(
-  'http://localhost:8000/api/properties/1/availabilities?start_date=2024-01-01&end_date=2024-01-31',
+  'https://office.homestayos.com/api/properties/1/availabilities?start_date=2024-01-01&end_date=2024-01-31',
   {
     method: 'GET',
     headers: {
@@ -65,7 +65,7 @@ const data = await response.json();
 import requests
 
 response = requests.get(
-    'http://localhost:8000/api/properties/1/availabilities',
+    'https://office.homestayos.com/api/properties/1/availabilities',
     params={'start_date': '2024-01-01', 'end_date': '2024-01-31'},
     headers={'Authorization': 'Bearer {your_token}'}
 )

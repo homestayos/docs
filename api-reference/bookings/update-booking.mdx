@@ -41,7 +41,7 @@ Update booking information. Only include fields you want to update.
 <CodeGroup>
 
 ```bash cURL
-curl -X PUT http://localhost:8000/api/bookings/1 \
+curl -X PUT https://office.homestayos.com/api/bookings/1 \
   -H "Authorization: Bearer {your_token}" \
   -H "Content-Type: application/json" \
   -d '{
@@ -51,7 +51,7 @@ curl -X PUT http://localhost:8000/api/bookings/1 \
 ```
 
 ```javascript JavaScript
-const response = await fetch('http://localhost:8000/api/bookings/1', {
+const response = await fetch('https://office.homestayos.com/api/bookings/1', {
   method: 'PUT',
   headers: {
     'Authorization': 'Bearer {your_token}',
@@ -70,7 +70,7 @@ const booking = await response.json();
 import requests
 
 response = requests.put(
-    'http://localhost:8000/api/bookings/1',
+    'https://office.homestayos.com/api/bookings/1',
     headers={
         'Authorization': 'Bearer {your_token}',
         'Content-Type': 'application/json',

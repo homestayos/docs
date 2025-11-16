@@ -14,12 +14,8 @@
   },
   "servers": [
     {
-      "url": "http://127.0.0.1:8000/api",
+      "url": "https://office.homestayos.com/api",
       "description": "Production server"
-    },
-    {
-      "url": "http://localhost:8000/api",
-      "description": "Local development server"
     }
   ],
   "tags": [

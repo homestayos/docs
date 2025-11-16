@@ -39,13 +39,13 @@ Retrieve a list of bookings with optional filtering by status, property, date ra
 <CodeGroup>
 
 ```bash cURL
-curl -X GET "http://localhost:8000/api/bookings?status=confirmed&filter=upcoming" \
+curl -X GET "https://office.homestayos.com/api/bookings?status=confirmed&filter=upcoming" \
   -H "Authorization: Bearer {your_token}"
 ```
 
 ```javascript JavaScript
 const response = await fetch(
-  'http://localhost:8000/api/bookings?status=confirmed&filter=upcoming',
+  'https://office.homestayos.com/api/bookings?status=confirmed&filter=upcoming',
   {
     method: 'GET',
     headers: {
@@ -61,7 +61,7 @@ const data = await response.json();
 import requests
 
 response = requests.get(
-    'http://localhost:8000/api/bookings',
+    'https://office.homestayos.com/api/bookings',
     params={'status': 'confirmed', 'filter': 'upcoming'},
     headers={'Authorization': 'Bearer {your_token}'}
 )

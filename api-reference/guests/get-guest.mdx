@@ -17,12 +17,12 @@ Retrieve detailed information about a specific guest.
 <CodeGroup>
 
 ```bash cURL
-curl -X GET http://localhost:8000/api/guests/1 \
+curl -X GET https://office.homestayos.com/api/guests/1 \
   -H "Authorization: Bearer {your_token}"
 ```
 
 ```javascript JavaScript
-const response = await fetch('http://localhost:8000/api/guests/1', {
+const response = await fetch('https://office.homestayos.com/api/guests/1', {
   method: 'GET',
   headers: {
     'Authorization': 'Bearer {your_token}',
@@ -36,7 +36,7 @@ const guest = await response.json();
 import requests
 
 response = requests.get(
-    'http://localhost:8000/api/guests/1',
+    'https://office.homestayos.com/api/guests/1',
     headers={'Authorization': 'Bearer {your_token}'}
 )
 

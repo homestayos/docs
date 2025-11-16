@@ -1,97 +1,288 @@
 ---
-title: "Introduction"
-description: "Welcome to the new home for your documentation"
+title: 'Welcome to HomestayOS API'
+description: 'Build powerful property management integrations with our comprehensive REST API'
 ---
 
-## Setting up
+<Warning>
+  This API is currently in development. Some endpoints may change. We recommend checking the [OpenAPI Specification](/api-reference/openapi.json) for the latest updates.
+</Warning>
 
-Get your documentation site up and running in minutes.
+## Build the Future of Property Management
 
-<Card
-  title="Start here"
-  icon="rocket"
-  href="/quickstart"
-  horizontal
->
-  Follow our three step quickstart guide.
-</Card>
+Welcome to the **HomestayOS API** — your gateway to building powerful integrations, automating workflows, and creating seamless experiences for property managers, hosts, and guests. Whether you're building a custom dashboard, integrating with third-party services, or creating automation workflows, our API gives you the tools to transform how properties are managed.
 
-## Make it yours
+## Why HomestayOS API?
 
-Design a docs site that looks great and empowers your users.
-
-<Columns cols={2}>
+<CardGroup cols={2}>
   <Card
-    title="Edit locally"
-    icon="pen-to-square"
-    href="/development"
+    title="🚀 Comprehensive Coverage"
+    icon="check-circle"
   >
-    Edit your docs locally and preview them in real time.
+    **234+ endpoints** covering every aspect of property management — from bookings and guests to maintenance and analytics. Everything you need, all in one place.
   </Card>
   <Card
-    title="Customize your site"
-    icon="palette"
-    href="/essentials/settings"
-  >
-    Customize the design and colors of your site to match your brand.
-  </Card>
-    <Card
-    title="Set up navigation"
-    icon="map"
-    href="/essentials/navigation"
-  >
-    Organize your docs to help users find what they need and succeed with your product.
-  </Card>
-  <Card
-    title="API documentation"
-    icon="terminal"
-    href="/api-reference/introduction"
-  >
-    Auto-generate API documentation from OpenAPI specifications.
-  </Card>
-</Columns>
-
-## Create beautiful pages
-
-Everything you need to create world-class documentation.
-
-<Columns cols={2}>
-  <Card
-    title="Write with MDX"
-    icon="pen-fancy"
-    href="/essentials/markdown"
-  >
-    Use MDX to style your docs pages.
-  </Card>
-  <Card
-    title="Code samples"
+    title="⚡ Developer-Friendly"
     icon="code"
-    href="/essentials/code"
   >
-    Add sample code to demonstrate how to use your product.
+    Built with developers in mind. RESTful design, clear documentation, consistent responses, and comprehensive error handling. Get up and running in minutes, not hours.
   </Card>
   <Card
-    title="Images"
-    icon="image"
-    href="/essentials/images"
+    title="🔐 Secure by Default"
+    icon="shield"
   >
-    Display images and other media.
+    Multiple authentication methods including Bearer tokens and API keys. Rate limiting, input validation, and secure data handling built right in.
   </Card>
   <Card
-    title="Reusable snippets"
-    icon="recycle"
-    href="/essentials/reusable-snippets"
+    title="📊 Real-Time Insights"
+    icon="chart-line"
   >
-    Write once and reuse across your docs.
+    Access real-time data on bookings, revenue, occupancy rates, and more. Build custom dashboards and analytics that give you the insights you need.
   </Card>
-</Columns>
+</CardGroup>
 
-## Need inspiration?
+## What Can You Build?
+
+The possibilities are endless. Here's what developers are building with HomestayOS API:
+
+### 🏠 Property Management Tools
+- Custom property dashboards and reporting systems
+- Automated pricing and availability management
+- Multi-property management interfaces
+- Property performance analytics
+
+### 🤖 Automation & Workflows
+- Automated guest communication systems
+- Smart pricing engines based on demand
+- Maintenance request automation
+- Task management and scheduling systems
+
+### 🔌 Third-Party Integrations
+- Connect with channel managers (Airbnb, Booking.com, etc.)
+- Integrate with payment processors
+- Sync with accounting software
+- Link with smart home devices
+
+### 📱 Custom Applications
+- Mobile apps for property managers
+- Guest-facing booking platforms
+- Staff management tools
+- Owner portals and reporting
+
+### 📈 Analytics & Reporting
+- Custom revenue reports
+- Occupancy trend analysis
+- Channel performance tracking
+- Financial forecasting tools
+
+## Quick Start
+
+Get started in **3 simple steps**:
+
+### Step 1: Get Your API Credentials
+
+Choose your authentication method:
+
+**Option A: Bearer Token (User Sessions)**
+```bash
+POST /api/login
+{
+  "email": "your@email.com",
+  "password": "your_password"
+}
+```
+
+**Option B: API Key (Programmatic Access)**
+Create an API key from the [Developer Settings](/api-reference/developer/api-keys) in your HomestayOS dashboard.
+
+### Step 2: Make Your First Request
+
+```bash
+curl -X GET https://office.homestayos.com/api/properties \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+### Step 3: Build Something Amazing
+
+Explore our [API Reference](/api-reference/all-endpoints) and start building!
 
 <Card
-  title="See complete examples"
-  icon="stars"
-  href="https://mintlify.com/customers"
+  title="Ready to Get Started?"
+  icon="rocket"
+  href="/api-reference/authentication/login"
 >
-  Browse our showcase of exceptional documentation sites.
+  View authentication endpoints →
 </Card>
+
+## API Overview
+
+### Base URLs
+
+- **Base URL**: `https://office.homestayos.com/api`
+
+### Authentication
+
+We support two authentication methods to fit your use case:
+
+**Bearer Token Authentication**
+Perfect for user-facing applications and web dashboards. Users log in and receive a token for their session.
+
+```bash
+Authorization: Bearer {your_token}
+```
+
+**API Key Authentication**
+Ideal for server-to-server integrations, automation scripts, and background processes.
+
+```bash
+X-API-Key: {your_api_key}
+```
+
+<Note>
+  Need an API key? Create one from the [Developer API Keys](/api-reference/developer/api-keys) endpoints or your HomestayOS dashboard.
+</Note>
+
+### Response Format
+
+All API responses follow a consistent JSON structure:
+
+**Success Response**
+```json
+{
+  "data": [...],
+  "success": true
+}
+```
+
+**Error Response**
+```json
+{
+  "error": "Error type",
+  "message": "Human-readable error message",
+  "details": {}
+}
+```
+
+### Rate Limiting
+
+To ensure fair usage and system stability, API requests are rate-limited. Rate limit information is included in response headers:
+
+- `X-RateLimit-Limit`: Maximum requests allowed
+- `X-RateLimit-Remaining`: Requests remaining in current window
+- `X-RateLimit-Reset`: Time when the limit resets
+
+## Core Features
+
+<AccordionGroup>
+  <Accordion title="Property Management">
+    Manage properties, amenities, photos, pricing rules, and availability calendars. Full CRUD operations with advanced filtering and search capabilities.
+  </Accordion>
+  <Accordion title="Booking Management">
+    Handle bookings from creation to completion. Support for multiple booking sources, payment tracking, and automated workflows.
+  </Accordion>
+  <Accordion title="Guest Management">
+    Comprehensive guest profiles, communication history, preferences, and statistics. Build better guest relationships with data-driven insights.
+  </Accordion>
+  <Accordion title="Maintenance & Tasks">
+    Track maintenance requests, automate task creation, and manage property upkeep. Keep your properties in perfect condition.
+  </Accordion>
+  <Accordion title="Analytics & Reporting">
+    Real-time revenue tracking, occupancy analysis, channel performance, and booking trends. Make data-driven decisions.
+  </Accordion>
+  <Accordion title="Automation & Webhooks">
+    Set up webhooks to receive real-time notifications. Automate workflows based on events like bookings, check-ins, and more.
+  </Accordion>
+</AccordionGroup>
+
+## HTTP Status Codes
+
+The API uses standard HTTP status codes:
+
+| Code | Meaning                 | Description                                    |
+| :--- | :---------------------- | :--------------------------------------------- |
+| 200  | OK                      | Request successful                              |
+| 201  | Created                 | Resource created successfully                   |
+| 204  | No Content              | Request successful, no content to return        |
+| 400  | Bad Request             | Invalid request parameters                      |
+| 401  | Unauthorized            | Authentication required or invalid              |
+| 403  | Forbidden               | Insufficient permissions                        |
+| 404  | Not Found               | Resource not found                              |
+| 422  | Unprocessable Entity    | Validation error                                |
+| 429  | Too Many Requests       | Rate limit exceeded                             |
+| 500  | Internal Server Error   | Server error (contact support)                  |
+
+## Resources & Documentation
+
+<CardGroup cols={2}>
+  <Card
+    title="Complete API Reference"
+    icon="book"
+    href="/api-reference/all-endpoints"
+  >
+    Browse all 234+ endpoints organized by category
+  </Card>
+  <Card
+    title="OpenAPI Specification"
+    icon="file-code"
+    href="/api-reference/openapi.json"
+  >
+    Download the complete OpenAPI 3.0 spec
+  </Card>
+  <Card
+    title="Endpoint Summary"
+    icon="list"
+    href="/api-reference/endpoint-summary"
+  >
+    See all available endpoint groups and their status
+  </Card>
+  <Card
+    title="Developer Tools"
+    icon="wrench"
+    href="/api-reference/developer/api-keys"
+  >
+    Manage API keys and webhook subscriptions
+  </Card>
+</CardGroup>
+
+## Best Practices
+
+<Tip>
+  **Use API Keys for Production**: For server-to-server integrations, use API keys instead of user tokens. They're more secure and don't expire with user sessions.
+</Tip>
+
+<Tip>
+  **Handle Rate Limits**: Implement exponential backoff when you hit rate limits. Check the `X-RateLimit-Reset` header to know when to retry.
+</Tip>
+
+<Tip>
+  **Validate Input**: Always validate input on your side before sending requests. The API will return 422 errors for invalid data, but client-side validation improves UX.
+</Tip>
+
+<Tip>
+  **Use Webhooks**: Instead of polling, set up webhooks to receive real-time updates. It's more efficient and reduces API calls.
+</Tip>
+
+## Need Help?
+
+We're here to help you succeed:
+
+- **Documentation**: Browse our comprehensive API reference
+- **Support Email**: [homestayos.com@gmail.com](mailto:homestayos.com@gmail.com)
+- **OpenAPI Spec**: Download the complete specification for code generation
+
+## Ready to Build?
+
+Start exploring our API and turn your ideas into reality. Whether you're building a simple integration or a complex property management platform, HomestayOS API has everything you need.
+
+<Card
+  title="Start Building Now"
+  icon="code"
+  href="/api-reference/authentication/login"
+>
+  Get started with authentication →
+</Card>
+
+---
+
+<Note>
+  **API Version**: This documentation covers API version 1.0.0. We follow semantic versioning and will provide migration guides for breaking changes.
+</Note>

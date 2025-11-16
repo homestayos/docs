@@ -25,12 +25,12 @@ Returns a success message.
 <CodeGroup>
 
 ```bash cURL
-curl -X DELETE http://localhost:8000/api/maintenance-requests/1 \
+curl -X DELETE https://office.homestayos.com/api/maintenance-requests/1 \
   -H "Authorization: Bearer {your_token}"
 ```
 
 ```javascript JavaScript
-const response = await fetch('http://localhost:8000/api/maintenance-requests/1', {
+const response = await fetch('https://office.homestayos.com/api/maintenance-requests/1', {
   method: 'DELETE',
   headers: {
     'Authorization': 'Bearer {your_token}',
@@ -44,7 +44,7 @@ const data = await response.json();
 import requests
 
 response = requests.delete(
-    'http://localhost:8000/api/maintenance-requests/1',
+    'https://office.homestayos.com/api/maintenance-requests/1',
     headers={
         'Authorization': 'Bearer {your_token}',
     }

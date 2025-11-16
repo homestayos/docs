@@ -21,7 +21,7 @@ Update the status of an existing task.
 <CodeGroup>
 
 ```bash cURL
-curl -X PUT http://localhost:8000/api/tasks/1/status \
+curl -X PUT https://office.homestayos.com/api/tasks/1/status \
   -H "Authorization: Bearer {your_token}" \
   -H "Content-Type: application/json" \
   -d '{
@@ -30,7 +30,7 @@ curl -X PUT http://localhost:8000/api/tasks/1/status \
 ```
 
 ```javascript JavaScript
-const response = await fetch('http://localhost:8000/api/tasks/1/status', {
+const response = await fetch('https://office.homestayos.com/api/tasks/1/status', {
   method: 'PUT',
   headers: {
     'Authorization': 'Bearer {your_token}',
@@ -48,7 +48,7 @@ const task = await response.json();
 import requests
 
 response = requests.put(
-    'http://localhost:8000/api/tasks/1/status',
+    'https://office.homestayos.com/api/tasks/1/status',
     headers={
         'Authorization': 'Bearer {your_token}',
         'Content-Type': 'application/json',

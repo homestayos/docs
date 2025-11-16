@@ -69,7 +69,7 @@ Returns the created maintenance request.
 <CodeGroup>
 
 ```bash cURL
-curl -X POST http://localhost:8000/api/maintenance-requests \
+curl -X POST https://office.homestayos.com/api/maintenance-requests \
   -H "Authorization: Bearer {your_token}" \
   -H "Content-Type: application/json" \
   -d '{
@@ -86,7 +86,7 @@ curl -X POST http://localhost:8000/api/maintenance-requests \
 ```
 
 ```javascript JavaScript
-const response = await fetch('http://localhost:8000/api/maintenance-requests', {
+const response = await fetch('https://office.homestayos.com/api/maintenance-requests', {
   method: 'POST',
   headers: {
     'Authorization': 'Bearer {your_token}',
@@ -112,7 +112,7 @@ const data = await response.json();
 import requests
 
 response = requests.post(
-    'http://localhost:8000/api/maintenance-requests',
+    'https://office.homestayos.com/api/maintenance-requests',
     headers={
         'Authorization': 'Bearer {your_token}',
         'Content-Type': 'application/json',

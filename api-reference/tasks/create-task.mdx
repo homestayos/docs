@@ -33,7 +33,7 @@ Create a new task for property management.
 <CodeGroup>
 
 ```bash cURL
-curl -X POST http://localhost:8000/api/tasks \
+curl -X POST https://office.homestayos.com/api/tasks \
   -H "Authorization: Bearer {your_token}" \
   -H "Content-Type: application/json" \
   -d '{
@@ -46,7 +46,7 @@ curl -X POST http://localhost:8000/api/tasks \
 ```
 
 ```javascript JavaScript
-const response = await fetch('http://localhost:8000/api/tasks', {
+const response = await fetch('https://office.homestayos.com/api/tasks', {
   method: 'POST',
   headers: {
     'Authorization': 'Bearer {your_token}',
@@ -68,7 +68,7 @@ const task = await response.json();
 import requests
 
 response = requests.post(
-    'http://localhost:8000/api/tasks',
+    'https://office.homestayos.com/api/tasks',
     headers={
         'Authorization': 'Bearer {your_token}',
         'Content-Type': 'application/json',

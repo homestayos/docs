@@ -9,7 +9,7 @@
   },
   "favicon": "/favicon.svg",
   "api": {
-    "baseUrl": "http://localhost:8000/api",
+    "baseUrl": "https://office.homestayos.com/api",
     "auth": {
       "method": "bearer",
       "token": "{token}"

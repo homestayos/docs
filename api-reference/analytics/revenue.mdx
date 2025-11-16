@@ -39,13 +39,13 @@ Retrieve revenue analytics and financial data for your properties.
 <CodeGroup>
 
 ```bash cURL
-curl -X GET "http://localhost:8000/api/analytics/revenue?start_date=2024-01-01&end_date=2024-01-31" \
+curl -X GET "https://office.homestayos.com/api/analytics/revenue?start_date=2024-01-01&end_date=2024-01-31" \
   -H "Authorization: Bearer {your_token}"
 ```
 
 ```javascript JavaScript
 const response = await fetch(
-  'http://localhost:8000/api/analytics/revenue?start_date=2024-01-01&end_date=2024-01-31',
+  'https://office.homestayos.com/api/analytics/revenue?start_date=2024-01-01&end_date=2024-01-31',
   {
     method: 'GET',
     headers: {
@@ -61,7 +61,7 @@ const analytics = await response.json();
 import requests
 
 response = requests.get(
-    'http://localhost:8000/api/analytics/revenue',
+    'https://office.homestayos.com/api/analytics/revenue',
     params={'start_date': '2024-01-01', 'end_date': '2024-01-31'},
     headers={'Authorization': 'Bearer {your_token}'}
 )

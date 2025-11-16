@@ -37,12 +37,12 @@ Returns maintenance request statistics.
 <CodeGroup>
 
 ```bash cURL
-curl -X GET http://localhost:8000/api/maintenance-requests/stats \
+curl -X GET https://office.homestayos.com/api/maintenance-requests/stats \
   -H "Authorization: Bearer {your_token}"
 ```
 
 ```javascript JavaScript
-const response = await fetch('http://localhost:8000/api/maintenance-requests/stats', {
+const response = await fetch('https://office.homestayos.com/api/maintenance-requests/stats', {
   method: 'GET',
   headers: {
     'Authorization': 'Bearer {your_token}',
@@ -56,7 +56,7 @@ const stats = await response.json();
 import requests
 
 response = requests.get(
-    'http://localhost:8000/api/maintenance-requests/stats',
+    'https://office.homestayos.com/api/maintenance-requests/stats',
     headers={
         'Authorization': 'Bearer {your_token}',
     }
