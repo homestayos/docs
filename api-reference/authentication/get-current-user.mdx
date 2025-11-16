@@ -1,0 +1,74 @@
+---
+title: 'Get Current User'
+api: 'GET /user'
+description: "Get the authenticated user's information"
+---
+
+## Request
+
+Retrieve information about the currently authenticated user. Requires either Bearer token or API key authentication.
+
+## Response
+
+<ResponseField name="id" type="integer">
+  User ID
+</ResponseField>
+
+<ResponseField name="name" type="string">
+  User's full name
+</ResponseField>
+
+<ResponseField name="email" type="string">
+  User's email address
+</ResponseField>
+
+<ResponseField name="tenant_id" type="integer">
+  ID of the tenant/organization the user belongs to
+</ResponseField>
+
+## Example Request
+
+<CodeGroup>
+
+```bash cURL
+curl -X GET http://localhost:8000/api/user \
+  -H "Authorization: Bearer {your_token}"
+```
+
+```javascript JavaScript
+const response = await fetch('http://localhost:8000/api/user', {
+  method: 'GET',
+  headers: {
+    'Authorization': 'Bearer {your_token}',
+  },
+});
+
+const user = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.get(
+    'http://localhost:8000/api/user',
+    headers={
+        'Authorization': 'Bearer {your_token}',
+    }
+)
+
+user = response.json()
+```
+
+</CodeGroup>
+
+## Example Response
+
+```json
+{
+  "id": 1,
+  "name": "John Doe",
+  "email": "user@example.com",
+  "tenant_id": 1
+}
+```
+

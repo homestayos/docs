@@ -1,87 +1,110 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "HomestayOS API Documentation",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#FF5C04",
+    "light": "#FF7A33",
+    "dark": "#CC4A03"
   },
   "favicon": "/favicon.svg",
   "navigation": {
-    "tabs": [
+    "groups": [
       {
-        "tab": "Guides",
-        "groups": [
-          {
-            "group": "Getting started",
-            "pages": [
-              "index",
-              "quickstart",
-              "development"
-            ]
-          },
-          {
-            "group": "Customization",
-            "pages": [
-              "essentials/settings",
-              "essentials/navigation"
-            ]
-          },
-          {
-            "group": "Writing content",
-            "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
-            ]
-          },
-          {
-            "group": "AI tools",
-            "pages": [
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
-            ]
-          }
+        "group": "Getting Started",
+        "pages": [
+          "api-reference/introduction"
         ]
       },
       {
-        "tab": "API reference",
-        "groups": [
-          {
-            "group": "API documentation",
-            "pages": [
-              "api-reference/introduction"
-            ]
-          },
-          {
-            "group": "Endpoint examples",
-            "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
-            ]
-          }
+        "group": "Authentication",
+        "pages": [
+          "api-reference/authentication/login",
+          "api-reference/authentication/get-current-user"
+        ]
+      },
+      {
+        "group": "Properties",
+        "pages": [
+          "api-reference/properties/list-properties",
+          "api-reference/properties/create-property",
+          "api-reference/properties/get-property",
+          "api-reference/properties/update-property",
+          "api-reference/properties/delete-property",
+          "api-reference/properties/get-availability"
+        ]
+      },
+      {
+        "group": "Bookings",
+        "pages": [
+          "api-reference/bookings/list-bookings",
+          "api-reference/bookings/create-booking",
+          "api-reference/bookings/get-booking",
+          "api-reference/bookings/update-booking",
+          "api-reference/bookings/cancel-booking"
+        ]
+      },
+      {
+        "group": "Guests",
+        "pages": [
+          "api-reference/guests/list-guests",
+          "api-reference/guests/create-guest",
+          "api-reference/guests/get-guest",
+          "api-reference/guests/update-guest",
+          "api-reference/guests/get-guest-stats"
+        ]
+      },
+      {
+        "group": "Calendar",
+        "pages": [
+          "api-reference/calendar/get-calendar-url"
+        ]
+      },
+      {
+        "group": "Analytics",
+        "pages": [
+          "api-reference/analytics/revenue",
+          "api-reference/analytics/occupancy"
+        ]
+      },
+      {
+        "group": "Conversations",
+        "pages": [
+          "api-reference/conversations/list-conversations",
+          "api-reference/conversations/create-conversation",
+          "api-reference/conversations/send-message"
+        ]
+      },
+      {
+        "group": "Tasks",
+        "pages": [
+          "api-reference/tasks/list-tasks",
+          "api-reference/tasks/create-task",
+          "api-reference/tasks/update-task-status"
+        ]
+      },
+      {
+        "group": "Developer",
+        "pages": [
+          "api-reference/developer/api-keys",
+          "api-reference/developer/webhooks"
         ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
+    ]
+  },
+  "global": {
+    "anchors": [
+      {
+        "anchor": "Documentation",
+        "href": "https://mintlify.com/docs",
+        "icon": "book-open-cover"
+      },
+      {
+        "anchor": "Blog",
+        "href": "https://mintlify.com/blog",
+        "icon": "newspaper"
+      }
+    ]
   },
   "logo": {
     "light": "/logo/light.svg",

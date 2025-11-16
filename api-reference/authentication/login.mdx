@@ -1,0 +1,90 @@
+---
+title: 'Login'
+api: 'POST /login'
+description: 'Authenticate user with email and password to receive an authentication token'
+---
+
+## Request
+
+Authenticate a user with their email and password to receive a Bearer token for subsequent API requests.
+
+<ParamField body name="email" type="string" required>
+  User's email address
+</ParamField>
+
+<ParamField body name="password" type="string" required>
+  User's password
+</ParamField>
+
+<ParamField body name="tenant_slug" type="string">
+  Optional tenant slug for multi-tenant authentication
+</ParamField>
+
+## Response
+
+<ResponseField name="token" type="string">
+  Bearer token for authentication
+</ResponseField>
+
+<ResponseField name="user" type="object">
+  Authenticated user information
+</ResponseField>
+
+## Example Request
+
+<CodeGroup>
+
+```bash cURL
+curl -X POST http://localhost:8000/api/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "user@example.com",
+    "password": "password123"
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch('http://localhost:8000/api/login', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    email: 'user@example.com',
+    password: 'password123',
+  }),
+});
+
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.post(
+    'http://localhost:8000/api/login',
+    json={
+        'email': 'user@example.com',
+        'password': 'password123',
+    }
+)
+
+data = response.json()
+```
+
+</CodeGroup>
+
+## Example Response
+
+```json
+{
+  "token": "1|abcdefghijklmnopqrstuvwxyz1234567890",
+  "user": {
+    "id": 1,
+    "name": "John Doe",
+    "email": "user@example.com",
+    "tenant_id": 1
+  }
+}
+```
+

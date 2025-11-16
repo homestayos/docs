@@ -1,0 +1,269 @@
+---
+title: 'Webhooks'
+api: 'GET /developer/webhook-subscriptions, POST /developer/webhook-subscriptions'
+description: 'Manage webhook subscriptions for event notifications'
+---
+
+## List Webhook Subscriptions
+
+Get all webhook subscriptions for the authenticated tenant.
+
+<CodeGroup>
+
+```bash cURL
+curl -X GET http://localhost:8000/api/developer/webhook-subscriptions \
+  -H "Authorization: Bearer {your_token}"
+```
+
+```javascript JavaScript
+const response = await fetch('http://localhost:8000/api/developer/webhook-subscriptions', {
+  method: 'GET',
+  headers: {
+    'Authorization': 'Bearer {your_token}',
+  },
+});
+
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.get(
+    'http://localhost:8000/api/developer/webhook-subscriptions',
+    headers={'Authorization': 'Bearer {your_token}'}
+)
+
+data = response.json()
+```
+
+</CodeGroup>
+
+### Response
+
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "id": 1,
+      "name": "Smart Key Automation",
+      "url": "https://example.com/webhooks/smart-key",
+      "events": ["booking.check_in", "booking.check_out"],
+      "is_active": true,
+      "secret": "whsec_abc123...",
+      "timeout": 30,
+      "retry_attempts": 3,
+      "success_count": 150,
+      "failure_count": 2,
+      "last_triggered_at": "2024-01-15T10:30:00.000000Z"
+    }
+  ]
+}
+```
+
+---
+
+## Create Webhook Subscription
+
+Subscribe to webhook events to receive real-time notifications when events occur in your account.
+
+<ParamField body name="developer_api_key_id" type="integer" required>
+  ID of the API key to associate with this webhook
+</ParamField>
+
+<ParamField body name="name" type="string" required>
+  Descriptive name for the webhook subscription
+</ParamField>
+
+<ParamField body name="url" type="string" format="uri" required>
+  URL where webhook events will be sent
+</ParamField>
+
+<ParamField body name="events" type="array" required>
+  Array of event names to subscribe to (e.g., `["booking.check_in", "booking.check_out"]`)
+</ParamField>
+
+<ParamField body name="secret" type="string">
+  Optional secret for webhook signature verification
+</ParamField>
+
+<ParamField body name="timeout" type="integer" default="30">
+  Request timeout in seconds
+</ParamField>
+
+<ParamField body name="retry_attempts" type="integer" default="3">
+  Number of retry attempts for failed webhook deliveries
+</ParamField>
+
+<CodeGroup>
+
+```bash cURL
+curl -X POST http://localhost:8000/api/developer/webhook-subscriptions \
+  -H "Authorization: Bearer {your_token}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "developer_api_key_id": 1,
+    "name": "Smart Key Automation",
+    "url": "https://example.com/webhooks/smart-key",
+    "events": ["booking.check_in", "booking.check_out", "booking.created"],
+    "secret": "my_webhook_secret",
+    "timeout": 30,
+    "retry_attempts": 3
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch('http://localhost:8000/api/developer/webhook-subscriptions', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer {your_token}',
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    developer_api_key_id: 1,
+    name: 'Smart Key Automation',
+    url: 'https://example.com/webhooks/smart-key',
+    events: ['booking.check_in', 'booking.check_out', 'booking.created'],
+    secret: 'my_webhook_secret',
+    timeout: 30,
+    retry_attempts: 3,
+  }),
+});
+
+const webhook = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.post(
+    'http://localhost:8000/api/developer/webhook-subscriptions',
+    headers={
+        'Authorization': 'Bearer {your_token}',
+        'Content-Type': 'application/json',
+    },
+    json={
+        'developer_api_key_id': 1,
+        'name': 'Smart Key Automation',
+        'url': 'https://example.com/webhooks/smart-key',
+        'events': ['booking.check_in', 'booking.check_out', 'booking.created'],
+        'secret': 'my_webhook_secret',
+        'timeout': 30,
+        'retry_attempts': 3,
+    }
+)
+
+webhook = response.json()
+```
+
+</CodeGroup>
+
+### Response
+
+```json
+{
+  "success": true,
+  "data": {
+    "id": 1,
+    "name": "Smart Key Automation",
+    "url": "https://example.com/webhooks/smart-key",
+    "events": ["booking.check_in", "booking.check_out", "booking.created"],
+    "is_active": true,
+    "secret": "my_webhook_secret",
+    "timeout": 30,
+    "retry_attempts": 3,
+    "success_count": 0,
+    "failure_count": 0,
+    "last_triggered_at": null
+  }
+}
+```
+
+---
+
+## Get Available Webhook Events
+
+Retrieve a list of all available webhook events that can be subscribed to.
+
+<CodeGroup>
+
+```bash cURL
+curl -X GET http://localhost:8000/api/developer/webhook-subscriptions/available-events \
+  -H "Authorization: Bearer {your_token}"
+```
+
+```javascript JavaScript
+const response = await fetch(
+  'http://localhost:8000/api/developer/webhook-subscriptions/available-events',
+  {
+    method: 'GET',
+    headers: {
+      'Authorization': 'Bearer {your_token}',
+    },
+  }
+);
+
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.get(
+    'http://localhost:8000/api/developer/webhook-subscriptions/available-events',
+    headers={'Authorization': 'Bearer {your_token}'}
+)
+
+data = response.json()
+```
+
+</CodeGroup>
+
+### Response
+
+```json
+{
+  "success": true,
+  "data": {
+    "events": [
+      "booking.created",
+      "booking.updated",
+      "booking.check_in",
+      "booking.check_out",
+      "booking.cancelled",
+      "guest.created",
+      "property.created",
+      "property.updated"
+    ],
+    "categories": {
+      "booking": ["created", "updated", "check_in", "check_out", "cancelled"],
+      "guest": ["created"],
+      "property": ["created", "updated"]
+    }
+  }
+}
+```
+
+## Webhook Delivery
+
+When an event occurs, a POST request will be sent to your webhook URL with the event data:
+
+```json
+{
+  "event": "booking.check_in",
+  "data": {
+    "id": 1,
+    "property_id": 1,
+    "guest_id": 1,
+    "check_in_date": "2024-02-01",
+    "status": "checked_in"
+  },
+  "timestamp": "2024-01-15T10:30:00.000000Z"
+}
+```
+
+<Tip>
+  Your webhook endpoint should return a 2xx status code to acknowledge receipt. Failed deliveries will be retried according to your `retry_attempts` setting.
+</Tip>
+

@@ -1,0 +1,79 @@
+---
+title: 'Get Occupancy Analytics'
+api: 'GET /analytics/occupancy'
+description: 'Get occupancy rate analytics'
+---
+
+## Request
+
+Retrieve occupancy rate analytics for your properties.
+
+<ParamField query name="start_date" type="string" format="date">
+  Start date for the analytics period (YYYY-MM-DD)
+</ParamField>
+
+<ParamField query name="end_date" type="string" format="date">
+  End date for the analytics period (YYYY-MM-DD)
+</ParamField>
+
+## Response
+
+<ResponseField name="occupancy_rate" type="number">
+  Occupancy rate as a percentage (0-100)
+</ResponseField>
+
+<ResponseField name="booked_nights" type="integer">
+  Total number of booked nights in the period
+</ResponseField>
+
+<ResponseField name="available_nights" type="integer">
+  Total number of available nights in the period
+</ResponseField>
+
+## Example Request
+
+<CodeGroup>
+
+```bash cURL
+curl -X GET "http://localhost:8000/api/analytics/occupancy?start_date=2024-01-01&end_date=2024-01-31" \
+  -H "Authorization: Bearer {your_token}"
+```
+
+```javascript JavaScript
+const response = await fetch(
+  'http://localhost:8000/api/analytics/occupancy?start_date=2024-01-01&end_date=2024-01-31',
+  {
+    method: 'GET',
+    headers: {
+      'Authorization': 'Bearer {your_token}',
+    },
+  }
+);
+
+const analytics = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.get(
+    'http://localhost:8000/api/analytics/occupancy',
+    params={'start_date': '2024-01-01', 'end_date': '2024-01-31'},
+    headers={'Authorization': 'Bearer {your_token}'}
+)
+
+analytics = response.json()
+```
+
+</CodeGroup>
+
+## Example Response
+
+```json
+{
+  "occupancy_rate": 75.5,
+  "booked_nights": 234,
+  "available_nights": 310
+}
+```
+

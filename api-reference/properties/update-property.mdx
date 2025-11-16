@@ -1,0 +1,139 @@
+---
+title: 'Update Property'
+api: 'PUT /properties/{id}'
+description: 'Update an existing property'
+---
+
+## Request
+
+Update property information. Only include fields you want to update.
+
+<ParamField path name="id" type="integer" required>
+  Property ID
+</ParamField>
+
+<ParamField body name="name" type="string">
+  Property name
+</ParamField>
+
+<ParamField body name="description" type="string">
+  Property description
+</ParamField>
+
+<ParamField body name="address" type="string">
+  Street address
+</ParamField>
+
+<ParamField body name="city" type="string">
+  City name
+</ParamField>
+
+<ParamField body name="state" type="string">
+  State or province
+</ParamField>
+
+<ParamField body name="country" type="string">
+  Country name
+</ParamField>
+
+<ParamField body name="postal_code" type="string">
+  Postal or ZIP code
+</ParamField>
+
+<ParamField body name="property_type" type="string">
+  Type of property
+</ParamField>
+
+<ParamField body name="bedrooms" type="integer">
+  Number of bedrooms
+</ParamField>
+
+<ParamField body name="bathrooms" type="integer">
+  Number of bathrooms
+</ParamField>
+
+<ParamField body name="max_guests" type="integer">
+  Maximum number of guests
+</ParamField>
+
+<ParamField body name="nightly_rate" type="number">
+  Default nightly rate
+</ParamField>
+
+<ParamField body name="is_active" type="boolean">
+  Whether the property is active
+</ParamField>
+
+## Example Request
+
+<CodeGroup>
+
+```bash cURL
+curl -X PUT http://localhost:8000/api/properties/1 \
+  -H "Authorization: Bearer {your_token}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "nightly_rate": 275.00,
+    "is_active": true
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch('http://localhost:8000/api/properties/1', {
+  method: 'PUT',
+  headers: {
+    'Authorization': 'Bearer {your_token}',
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    nightly_rate: 275.00,
+    is_active: true,
+  }),
+});
+
+const property = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.put(
+    'http://localhost:8000/api/properties/1',
+    headers={
+        'Authorization': 'Bearer {your_token}',
+        'Content-Type': 'application/json',
+    },
+    json={
+        'nightly_rate': 275.00,
+        'is_active': True,
+    }
+)
+
+property = response.json()
+```
+
+</CodeGroup>
+
+## Example Response
+
+```json
+{
+  "id": 1,
+  "name": "Beachfront Villa",
+  "description": "Beautiful beachfront property",
+  "address": "123 Ocean Drive",
+  "city": "Miami",
+  "state": "FL",
+  "country": "USA",
+  "postal_code": "33139",
+  "property_type": "Villa",
+  "bedrooms": 3,
+  "bathrooms": 2,
+  "max_guests": 6,
+  "nightly_rate": 275.00,
+  "is_active": true,
+  "created_at": "2024-01-01T00:00:00.000000Z",
+  "updated_at": "2024-01-02T00:00:00.000000Z"
+}
+```
+

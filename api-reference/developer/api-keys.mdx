@@ -1,0 +1,153 @@
+---
+title: 'API Keys'
+api: 'GET /developer/api-keys, POST /developer/api-keys'
+description: 'Manage API keys for programmatic access'
+---
+
+## List API Keys
+
+Get all API keys for the authenticated tenant.
+
+<CodeGroup>
+
+```bash cURL
+curl -X GET http://localhost:8000/api/developer/api-keys \
+  -H "Authorization: Bearer {your_token}"
+```
+
+```javascript JavaScript
+const response = await fetch('http://localhost:8000/api/developer/api-keys', {
+  method: 'GET',
+  headers: {
+    'Authorization': 'Bearer {your_token}',
+  },
+});
+
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.get(
+    'http://localhost:8000/api/developer/api-keys',
+    headers={'Authorization': 'Bearer {your_token}'}
+)
+
+data = response.json()
+```
+
+</CodeGroup>
+
+### Response
+
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "id": 1,
+      "name": "My Smart Key Integration",
+      "api_key": "hsk_abc123...",
+      "is_active": true,
+      "last_used_at": "2024-01-15T10:30:00.000000Z",
+      "expires_at": null
+    }
+  ]
+}
+```
+
+---
+
+## Create API Key
+
+Create a new API key for developer access. **Important**: The API secret is only shown once when the key is created.
+
+<ParamField body name="name" type="string" required>
+  Descriptive name for the API key
+</ParamField>
+
+<ParamField body name="expires_at" type="string" format="date-time">
+  Optional expiration date for the API key (ISO 8601 format)
+</ParamField>
+
+<CodeGroup>
+
+```bash cURL
+curl -X POST http://localhost:8000/api/developer/api-keys \
+  -H "Authorization: Bearer {your_token}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "My Smart Key Integration",
+    "expires_at": "2025-12-31T23:59:59Z"
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch('http://localhost:8000/api/developer/api-keys', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer {your_token}',
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    name: 'My Smart Key Integration',
+    expires_at: '2025-12-31T23:59:59Z',
+  }),
+});
+
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.post(
+    'http://localhost:8000/api/developer/api-keys',
+    headers={
+        'Authorization': 'Bearer {your_token}',
+        'Content-Type': 'application/json',
+    },
+    json={
+        'name': 'My Smart Key Integration',
+        'expires_at': '2025-12-31T23:59:59Z',
+    }
+)
+
+data = response.json()
+```
+
+</CodeGroup>
+
+### Response
+
+<Warning>
+  Save the `api_secret` immediately! It will not be shown again.
+</Warning>
+
+```json
+{
+  "success": true,
+  "data": {
+    "id": 1,
+    "name": "My Smart Key Integration",
+    "api_key": "hsk_abc123...",
+    "api_secret": "hss_xyz789...",
+    "is_active": true,
+    "last_used_at": null,
+    "expires_at": "2025-12-31T23:59:59.000000Z"
+  },
+  "message": "API key created successfully. Please save the secret now."
+}
+```
+
+## Using API Keys
+
+Once you have an API key and secret, use them to authenticate requests:
+
+```bash
+X-API-Key: {your_api_key}
+```
+
+For enhanced security, you can also include the API secret in a custom header or use it for request signing (implementation depends on your security requirements).
+

@@ -1,0 +1,66 @@
+---
+title: 'Cancel Booking'
+api: 'POST /bookings/{id}/cancel'
+description: 'Cancel a booking'
+---
+
+## Request
+
+Cancel an existing booking. This will change the booking status to `cancelled`.
+
+<ParamField path name="id" type="integer" required>
+  Booking ID to cancel
+</ParamField>
+
+## Example Request
+
+<CodeGroup>
+
+```bash cURL
+curl -X POST http://localhost:8000/api/bookings/1/cancel \
+  -H "Authorization: Bearer {your_token}"
+```
+
+```javascript JavaScript
+const response = await fetch('http://localhost:8000/api/bookings/1/cancel', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer {your_token}',
+  },
+});
+
+const booking = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.post(
+    'http://localhost:8000/api/bookings/1/cancel',
+    headers={'Authorization': 'Bearer {your_token}'}
+)
+
+booking = response.json()
+```
+
+</CodeGroup>
+
+## Example Response
+
+```json
+{
+  "id": 1,
+  "property_id": 1,
+  "guest_id": 1,
+  "check_in_date": "2024-02-01",
+  "check_out_date": "2024-02-05",
+  "guests_count": 2,
+  "nightly_rate": 250.00,
+  "total_amount": 1175.00,
+  "status": "cancelled",
+  "source": "direct",
+  "created_at": "2024-01-15T00:00:00.000000Z",
+  "updated_at": "2024-01-16T00:00:00.000000Z"
+}
+```
+

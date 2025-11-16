@@ -1,0 +1,96 @@
+---
+title: 'List Bookings'
+api: 'GET /bookings'
+description: 'Get all bookings with optional filtering'
+---
+
+## Request
+
+Retrieve a list of bookings with optional filtering by status, property, date range, and more.
+
+<ParamField query name="status" type="string">
+  Filter by booking status. Options: `pending`, `confirmed`, `checked_in`, `checked_out`, `cancelled`
+</ParamField>
+
+<ParamField query name="property_id" type="integer">
+  Filter bookings by property ID
+</ParamField>
+
+<ParamField query name="start_date" type="string" format="date">
+  Filter bookings starting from this date (YYYY-MM-DD)
+</ParamField>
+
+<ParamField query name="end_date" type="string" format="date">
+  Filter bookings ending before this date (YYYY-MM-DD)
+</ParamField>
+
+<ParamField query name="filter" type="string">
+  Quick filter. Options: `upcoming`, `past`, `active`
+</ParamField>
+
+## Response
+
+<ResponseField name="data" type="array">
+  Array of booking objects
+</ResponseField>
+
+## Example Request
+
+<CodeGroup>
+
+```bash cURL
+curl -X GET "http://localhost:8000/api/bookings?status=confirmed&filter=upcoming" \
+  -H "Authorization: Bearer {your_token}"
+```
+
+```javascript JavaScript
+const response = await fetch(
+  'http://localhost:8000/api/bookings?status=confirmed&filter=upcoming',
+  {
+    method: 'GET',
+    headers: {
+      'Authorization': 'Bearer {your_token}',
+    },
+  }
+);
+
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.get(
+    'http://localhost:8000/api/bookings',
+    params={'status': 'confirmed', 'filter': 'upcoming'},
+    headers={'Authorization': 'Bearer {your_token}'}
+)
+
+data = response.json()
+```
+
+</CodeGroup>
+
+## Example Response
+
+```json
+{
+  "data": [
+    {
+      "id": 1,
+      "property_id": 1,
+      "guest_id": 1,
+      "check_in_date": "2024-02-01",
+      "check_out_date": "2024-02-05",
+      "guests_count": 2,
+      "nightly_rate": 250.00,
+      "total_amount": 1000.00,
+      "status": "confirmed",
+      "source": "direct",
+      "created_at": "2024-01-15T00:00:00.000000Z",
+      "updated_at": "2024-01-15T00:00:00.000000Z"
+    }
+  ]
+}
+```
+

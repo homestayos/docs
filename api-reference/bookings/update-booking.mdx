@@ -1,0 +1,107 @@
+---
+title: 'Update Booking'
+api: 'PUT /bookings/{id}'
+description: 'Update an existing booking'
+---
+
+## Request
+
+Update booking information. Only include fields you want to update.
+
+<ParamField path name="id" type="integer" required>
+  Booking ID
+</ParamField>
+
+<ParamField body name="check_in_date" type="string" format="date">
+  Check-in date (YYYY-MM-DD)
+</ParamField>
+
+<ParamField body name="check_out_date" type="string" format="date">
+  Check-out date (YYYY-MM-DD)
+</ParamField>
+
+<ParamField body name="guests_count" type="integer">
+  Number of guests
+</ParamField>
+
+<ParamField body name="nightly_rate" type="number">
+  Nightly rate
+</ParamField>
+
+<ParamField body name="status" type="string">
+  Booking status. Options: `pending`, `confirmed`, `checked_in`, `checked_out`, `cancelled`
+</ParamField>
+
+<ParamField body name="special_requests" type="string">
+  Special requests or notes
+</ParamField>
+
+## Example Request
+
+<CodeGroup>
+
+```bash cURL
+curl -X PUT http://localhost:8000/api/bookings/1 \
+  -H "Authorization: Bearer {your_token}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "status": "confirmed",
+    "special_requests": "Late check-in requested"
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch('http://localhost:8000/api/bookings/1', {
+  method: 'PUT',
+  headers: {
+    'Authorization': 'Bearer {your_token}',
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    status: 'confirmed',
+    special_requests: 'Late check-in requested',
+  }),
+});
+
+const booking = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.put(
+    'http://localhost:8000/api/bookings/1',
+    headers={
+        'Authorization': 'Bearer {your_token}',
+        'Content-Type': 'application/json',
+    },
+    json={
+        'status': 'confirmed',
+        'special_requests': 'Late check-in requested',
+    }
+)
+
+booking = response.json()
+```
+
+</CodeGroup>
+
+## Example Response
+
+```json
+{
+  "id": 1,
+  "property_id": 1,
+  "guest_id": 1,
+  "check_in_date": "2024-02-01",
+  "check_out_date": "2024-02-05",
+  "guests_count": 2,
+  "nightly_rate": 250.00,
+  "total_amount": 1175.00,
+  "status": "confirmed",
+  "source": "direct",
+  "created_at": "2024-01-15T00:00:00.000000Z",
+  "updated_at": "2024-01-16T00:00:00.000000Z"
+}
+```
+

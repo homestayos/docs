@@ -1,0 +1,103 @@
+---
+title: 'Create Task'
+api: 'POST /tasks'
+description: 'Create a new task'
+---
+
+## Request
+
+Create a new task for property management.
+
+<ParamField body name="title" type="string" required>
+  Task title
+</ParamField>
+
+<ParamField body name="property_id" type="integer" required>
+  ID of the property this task is for
+</ParamField>
+
+<ParamField body name="description" type="string">
+  Task description
+</ParamField>
+
+<ParamField body name="assigned_to" type="integer">
+  ID of the user assigned to this task
+</ParamField>
+
+<ParamField body name="due_date" type="string" format="date-time">
+  Due date and time for the task (ISO 8601 format)
+</ParamField>
+
+## Example Request
+
+<CodeGroup>
+
+```bash cURL
+curl -X POST http://localhost:8000/api/tasks \
+  -H "Authorization: Bearer {your_token}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Clean property after checkout",
+    "description": "Deep clean all rooms and restock supplies",
+    "property_id": 1,
+    "assigned_to": 2,
+    "due_date": "2024-02-05T14:00:00Z"
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch('http://localhost:8000/api/tasks', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer {your_token}',
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    title: 'Clean property after checkout',
+    description: 'Deep clean all rooms and restock supplies',
+    property_id: 1,
+    assigned_to: 2,
+    due_date: '2024-02-05T14:00:00Z',
+  }),
+});
+
+const task = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.post(
+    'http://localhost:8000/api/tasks',
+    headers={
+        'Authorization': 'Bearer {your_token}',
+        'Content-Type': 'application/json',
+    },
+    json={
+        'title': 'Clean property after checkout',
+        'description': 'Deep clean all rooms and restock supplies',
+        'property_id': 1,
+        'assigned_to': 2,
+        'due_date': '2024-02-05T14:00:00Z',
+    }
+)
+
+task = response.json()
+```
+
+</CodeGroup>
+
+## Example Response
+
+```json
+{
+  "id": 1,
+  "title": "Clean property after checkout",
+  "description": "Deep clean all rooms and restock supplies",
+  "property_id": 1,
+  "status": "pending",
+  "due_date": "2024-02-05T14:00:00.000000Z",
+  "created_at": "2024-01-15T00:00:00.000000Z"
+}
+```
+

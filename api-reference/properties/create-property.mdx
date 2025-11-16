@@ -1,0 +1,162 @@
+---
+title: 'Create Property'
+api: 'POST /properties'
+description: 'Create a new property'
+---
+
+## Request
+
+Create a new property in your account.
+
+<ParamField body name="name" type="string" required>
+  Property name
+</ParamField>
+
+<ParamField body name="address" type="string" required>
+  Street address
+</ParamField>
+
+<ParamField body name="city" type="string" required>
+  City name
+</ParamField>
+
+<ParamField body name="country" type="string" required>
+  Country name
+</ParamField>
+
+<ParamField body name="description" type="string">
+  Property description
+</ParamField>
+
+<ParamField body name="state" type="string">
+  State or province
+</ParamField>
+
+<ParamField body name="postal_code" type="string">
+  Postal or ZIP code
+</ParamField>
+
+<ParamField body name="property_type" type="string">
+  Type of property (e.g., "Villa", "Apartment", "House")
+</ParamField>
+
+<ParamField body name="bedrooms" type="integer">
+  Number of bedrooms
+</ParamField>
+
+<ParamField body name="bathrooms" type="integer">
+  Number of bathrooms
+</ParamField>
+
+<ParamField body name="max_guests" type="integer">
+  Maximum number of guests
+</ParamField>
+
+<ParamField body name="nightly_rate" type="number">
+  Default nightly rate
+</ParamField>
+
+## Response
+
+Returns the created property object with all fields including generated ID and timestamps.
+
+## Example Request
+
+<CodeGroup>
+
+```bash cURL
+curl -X POST http://localhost:8000/api/properties \
+  -H "Authorization: Bearer {your_token}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Beachfront Villa",
+    "address": "123 Ocean Drive",
+    "city": "Miami",
+    "state": "FL",
+    "country": "USA",
+    "postal_code": "33139",
+    "property_type": "Villa",
+    "bedrooms": 3,
+    "bathrooms": 2,
+    "max_guests": 6,
+    "nightly_rate": 250.00
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch('http://localhost:8000/api/properties', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer {your_token}',
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    name: 'Beachfront Villa',
+    address: '123 Ocean Drive',
+    city: 'Miami',
+    state: 'FL',
+    country: 'USA',
+    postal_code: '33139',
+    property_type: 'Villa',
+    bedrooms: 3,
+    bathrooms: 2,
+    max_guests: 6,
+    nightly_rate: 250.00,
+  }),
+});
+
+const property = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.post(
+    'http://localhost:8000/api/properties',
+    headers={
+        'Authorization': 'Bearer {your_token}',
+        'Content-Type': 'application/json',
+    },
+    json={
+        'name': 'Beachfront Villa',
+        'address': '123 Ocean Drive',
+        'city': 'Miami',
+        'state': 'FL',
+        'country': 'USA',
+        'postal_code': '33139',
+        'property_type': 'Villa',
+        'bedrooms': 3,
+        'bathrooms': 2,
+        'max_guests': 6,
+        'nightly_rate': 250.00,
+    }
+)
+
+property = response.json()
+```
+
+</CodeGroup>
+
+## Example Response
+
+```json
+{
+  "id": 1,
+  "name": "Beachfront Villa",
+  "description": null,
+  "address": "123 Ocean Drive",
+  "city": "Miami",
+  "state": "FL",
+  "country": "USA",
+  "postal_code": "33139",
+  "property_type": "Villa",
+  "bedrooms": 3,
+  "bathrooms": 2,
+  "max_guests": 6,
+  "nightly_rate": 250.00,
+  "is_active": true,
+  "created_at": "2024-01-01T00:00:00.000000Z",
+  "updated_at": "2024-01-01T00:00:00.000000Z"
+}
+```
+

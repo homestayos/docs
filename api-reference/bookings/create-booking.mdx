@@ -1,0 +1,172 @@
+---
+title: 'Create Booking'
+api: 'POST /bookings'
+description: 'Create a new booking'
+---
+
+## Request
+
+Create a new booking for a property. Guest information can be provided either by referencing an existing guest ID or by providing guest details directly.
+
+<ParamField body name="property_id" type="integer" required>
+  ID of the property being booked
+</ParamField>
+
+<ParamField body name="check_in_date" type="string" format="date" required>
+  Check-in date (YYYY-MM-DD)
+</ParamField>
+
+<ParamField body name="check_out_date" type="string" format="date" required>
+  Check-out date (YYYY-MM-DD)
+</ParamField>
+
+<ParamField body name="guests_count" type="integer" required>
+  Number of guests
+</ParamField>
+
+<ParamField body name="nightly_rate" type="number" required>
+  Nightly rate for this booking
+</ParamField>
+
+<ParamField body name="guest_id" type="integer">
+  ID of existing guest (if guest already exists)
+</ParamField>
+
+<ParamField body name="guest_first_name" type="string">
+  Guest's first name (if creating new guest)
+</ParamField>
+
+<ParamField body name="guest_last_name" type="string">
+  Guest's last name (if creating new guest)
+</ParamField>
+
+<ParamField body name="guest_email" type="string" format="email">
+  Guest's email address (if creating new guest)
+</ParamField>
+
+<ParamField body name="guest_phone" type="string">
+  Guest's phone number
+</ParamField>
+
+<ParamField body name="cleaning_fee" type="number">
+  Cleaning fee amount
+</ParamField>
+
+<ParamField body name="service_fee" type="number">
+  Service fee amount
+</ParamField>
+
+<ParamField body name="taxes" type="number">
+  Tax amount
+</ParamField>
+
+<ParamField body name="source" type="string">
+  Booking source (e.g., "direct", "airbnb", "booking.com")
+</ParamField>
+
+<ParamField body name="special_requests" type="string">
+  Special requests or notes
+</ParamField>
+
+## Example Request
+
+<CodeGroup>
+
+```bash cURL
+curl -X POST http://localhost:8000/api/bookings \
+  -H "Authorization: Bearer {your_token}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "property_id": 1,
+    "check_in_date": "2024-02-01",
+    "check_out_date": "2024-02-05",
+    "guests_count": 2,
+    "nightly_rate": 250.00,
+    "guest_first_name": "Jane",
+    "guest_last_name": "Smith",
+    "guest_email": "jane@example.com",
+    "guest_phone": "+1234567890",
+    "cleaning_fee": 50.00,
+    "service_fee": 25.00,
+    "taxes": 100.00,
+    "source": "direct"
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch('http://localhost:8000/api/bookings', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer {your_token}',
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    property_id: 1,
+    check_in_date: '2024-02-01',
+    check_out_date: '2024-02-05',
+    guests_count: 2,
+    nightly_rate: 250.00,
+    guest_first_name: 'Jane',
+    guest_last_name: 'Smith',
+    guest_email: 'jane@example.com',
+    guest_phone: '+1234567890',
+    cleaning_fee: 50.00,
+    service_fee: 25.00,
+    taxes: 100.00,
+    source: 'direct',
+  }),
+});
+
+const booking = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.post(
+    'http://localhost:8000/api/bookings',
+    headers={
+        'Authorization': 'Bearer {your_token}',
+        'Content-Type': 'application/json',
+    },
+    json={
+        'property_id': 1,
+        'check_in_date': '2024-02-01',
+        'check_out_date': '2024-02-05',
+        'guests_count': 2,
+        'nightly_rate': 250.00,
+        'guest_first_name': 'Jane',
+        'guest_last_name': 'Smith',
+        'guest_email': 'jane@example.com',
+        'guest_phone': '+1234567890',
+        'cleaning_fee': 50.00,
+        'service_fee': 25.00,
+        'taxes': 100.00,
+        'source': 'direct',
+    }
+)
+
+booking = response.json()
+```
+
+</CodeGroup>
+
+## Example Response
+
+```json
+{
+  "id": 1,
+  "property_id": 1,
+  "guest_id": 1,
+  "check_in_date": "2024-02-01",
+  "check_out_date": "2024-02-05",
+  "guests_count": 2,
+  "nightly_rate": 250.00,
+  "total_amount": 1175.00,
+  "status": "pending",
+  "source": "direct",
+  "created_at": "2024-01-15T00:00:00.000000Z",
+  "updated_at": "2024-01-15T00:00:00.000000Z"
+}
+```
+

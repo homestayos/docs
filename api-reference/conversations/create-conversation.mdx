@@ -1,0 +1,87 @@
+---
+title: 'Create Conversation'
+api: 'POST /conversations'
+description: 'Create a new conversation'
+---
+
+## Request
+
+Create a new conversation with a guest.
+
+<ParamField body name="guest_id" type="integer" required>
+  ID of the guest
+</ParamField>
+
+<ParamField body name="subject" type="string" required>
+  Conversation subject/title
+</ParamField>
+
+<ParamField body name="message" type="string" required>
+  Initial message content
+</ParamField>
+
+## Example Request
+
+<CodeGroup>
+
+```bash cURL
+curl -X POST http://localhost:8000/api/conversations \
+  -H "Authorization: Bearer {your_token}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "guest_id": 1,
+    "subject": "Welcome message",
+    "message": "Thank you for your booking!"
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch('http://localhost:8000/api/conversations', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer {your_token}',
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    guest_id: 1,
+    subject: 'Welcome message',
+    message: 'Thank you for your booking!',
+  }),
+});
+
+const conversation = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.post(
+    'http://localhost:8000/api/conversations',
+    headers={
+        'Authorization': 'Bearer {your_token}',
+        'Content-Type': 'application/json',
+    },
+    json={
+        'guest_id': 1,
+        'subject': 'Welcome message',
+        'message': 'Thank you for your booking!',
+    }
+)
+
+conversation = response.json()
+```
+
+</CodeGroup>
+
+## Example Response
+
+```json
+{
+  "id": 1,
+  "guest_id": 1,
+  "subject": "Welcome message",
+  "status": "open",
+  "created_at": "2024-01-15T00:00:00.000000Z"
+}
+```
+

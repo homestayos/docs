@@ -1,0 +1,79 @@
+---
+title: 'Update Task Status'
+api: 'PUT /tasks/{id}/status'
+description: 'Update the status of a task'
+---
+
+## Request
+
+Update the status of an existing task.
+
+<ParamField path name="id" type="integer" required>
+  Task ID
+</ParamField>
+
+<ParamField body name="status" type="string" required>
+  New task status. Options: `pending`, `in_progress`, `completed`, `cancelled`
+</ParamField>
+
+## Example Request
+
+<CodeGroup>
+
+```bash cURL
+curl -X PUT http://localhost:8000/api/tasks/1/status \
+  -H "Authorization: Bearer {your_token}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "status": "completed"
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch('http://localhost:8000/api/tasks/1/status', {
+  method: 'PUT',
+  headers: {
+    'Authorization': 'Bearer {your_token}',
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    status: 'completed',
+  }),
+});
+
+const task = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.put(
+    'http://localhost:8000/api/tasks/1/status',
+    headers={
+        'Authorization': 'Bearer {your_token}',
+        'Content-Type': 'application/json',
+    },
+    json={
+        'status': 'completed',
+    }
+)
+
+task = response.json()
+```
+
+</CodeGroup>
+
+## Example Response
+
+```json
+{
+  "id": 1,
+  "title": "Clean property after checkout",
+  "description": "Deep clean all rooms and restock supplies",
+  "property_id": 1,
+  "status": "completed",
+  "due_date": "2024-02-05T14:00:00.000000Z",
+  "created_at": "2024-01-15T00:00:00.000000Z"
+}
+```
+

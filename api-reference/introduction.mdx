@@ -1,33 +1,106 @@
 ---
-title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+title: 'API Introduction'
+description: 'Get started with the HomestayOS API'
 ---
 
-<Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
-</Note>
+## Overview
 
-## Welcome
+The HomestayOS API is a comprehensive REST API that enables developers to build integrations, automate workflows, and access property management data programmatically. This API provides endpoints for managing properties, bookings, guests, calendars, analytics, conversations, tasks, and more.
 
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
+## Base URL
 
-<Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
->
-  View the OpenAPI specification file
-</Card>
+The API is available at the following base URLs:
+
+- **Production**: `http://127.0.0.1:8000/api`
+- **Local Development**: `http://localhost:8000/api`
 
 ## Authentication
 
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
+The HomestayOS API supports two authentication methods:
+
+### Bearer Token Authentication
+
+For user-based authentication, use Laravel Sanctum Bearer tokens. Include the token in the `Authorization` header:
+
+```bash
+Authorization: Bearer {your_token}
+```
+
+### API Key Authentication
+
+For programmatic access, use API keys. Include the API key in the `X-API-Key` header:
+
+```bash
+X-API-Key: {your_api_key}
+```
+
+<Note>
+  To create an API key, use the [Developer API Keys](/api-reference/developer/api-keys) endpoints.
+</Note>
+
+## Rate Limiting
+
+API requests are rate-limited to ensure fair usage. Rate limit headers are included in all responses:
+
+- `X-RateLimit-Limit`: Maximum number of requests allowed
+- `X-RateLimit-Remaining`: Number of requests remaining
+- `X-RateLimit-Reset`: Time when the rate limit resets
+
+## Response Format
+
+All API responses follow a consistent JSON format:
+
+### Success Response
 
 ```json
-"security": [
-  {
-    "bearerAuth": []
-  }
-]
+{
+  "data": [...],
+  "success": true
+}
 ```
+
+### Error Response
+
+```json
+{
+  "error": "Error type",
+  "message": "Human-readable error message"
+}
+```
+
+## HTTP Status Codes
+
+The API uses standard HTTP status codes:
+
+- `200` - Success
+- `201` - Created
+- `400` - Bad Request
+- `401` - Unauthorized
+- `403` - Forbidden
+- `404` - Not Found
+- `422` - Validation Error
+- `500` - Internal Server Error
+
+## OpenAPI Specification
+
+The complete OpenAPI 3.0 specification is available at:
+
+<Card
+  title="OpenAPI Specification"
+  icon="code"
+  href="/api-reference/openapi.json"
+>
+  View the complete OpenAPI specification
+</Card>
+
+## Getting Started
+
+1. **Authenticate**: Use the [Login endpoint](/api-reference/authentication/login) to get your Bearer token, or create an [API Key](/api-reference/developer/api-keys) for programmatic access.
+
+2. **Make Requests**: Include your authentication token in the request headers and start making API calls.
+
+3. **Explore Endpoints**: Browse the API reference documentation to discover available endpoints for your use case.
+
+## Support
+
+For API support, contact us at [support@homestayos.com](mailto:support@homestayos.com).

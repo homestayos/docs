@@ -1,0 +1,58 @@
+---
+title: 'Delete Property'
+api: 'DELETE /properties/{id}'
+description: 'Delete a property'
+---
+
+## Request
+
+Permanently delete a property from your account.
+
+<Warning>
+  This action cannot be undone. All associated data (bookings, availability, etc.) may also be affected.
+</Warning>
+
+<ParamField path name="id" type="integer" required>
+  Property ID to delete
+</ParamField>
+
+## Response
+
+Returns a success response with status code 200.
+
+## Example Request
+
+<CodeGroup>
+
+```bash cURL
+curl -X DELETE http://localhost:8000/api/properties/1 \
+  -H "Authorization: Bearer {your_token}"
+```
+
+```javascript JavaScript
+const response = await fetch('http://localhost:8000/api/properties/1', {
+  method: 'DELETE',
+  headers: {
+    'Authorization': 'Bearer {your_token}',
+  },
+});
+
+if (response.ok) {
+  console.log('Property deleted successfully');
+}
+```
+
+```python Python
+import requests
+
+response = requests.delete(
+    'http://localhost:8000/api/properties/1',
+    headers={'Authorization': 'Bearer {your_token}'}
+)
+
+if response.status_code == 200:
+    print('Property deleted successfully')
+```
+
+</CodeGroup>
+

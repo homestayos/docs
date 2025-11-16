@@ -1,0 +1,101 @@
+---
+title: 'Get Property Availability'
+api: 'GET /properties/{property}/availabilities'
+description: 'Get availability calendar for a property'
+---
+
+## Request
+
+Retrieve availability and pricing information for a property within a date range.
+
+<ParamField path name="property" type="integer" required>
+  Property ID
+</ParamField>
+
+<ParamField query name="start_date" type="string" format="date">
+  Start date for availability range (YYYY-MM-DD)
+</ParamField>
+
+<ParamField query name="end_date" type="string" format="date">
+  End date for availability range (YYYY-MM-DD)
+</ParamField>
+
+## Response
+
+<ResponseField name="data" type="array">
+  Array of availability objects
+</ResponseField>
+
+<ResponseField name="data[].date" type="string" format="date">
+  Date in YYYY-MM-DD format
+</ResponseField>
+
+<ResponseField name="data[].available" type="boolean">
+  Whether the property is available on this date
+</ResponseField>
+
+<ResponseField name="data[].rate" type="number">
+  Nightly rate for this date
+</ResponseField>
+
+## Example Request
+
+<CodeGroup>
+
+```bash cURL
+curl -X GET "http://localhost:8000/api/properties/1/availabilities?start_date=2024-01-01&end_date=2024-01-31" \
+  -H "Authorization: Bearer {your_token}"
+```
+
+```javascript JavaScript
+const response = await fetch(
+  'http://localhost:8000/api/properties/1/availabilities?start_date=2024-01-01&end_date=2024-01-31',
+  {
+    method: 'GET',
+    headers: {
+      'Authorization': 'Bearer {your_token}',
+    },
+  }
+);
+
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.get(
+    'http://localhost:8000/api/properties/1/availabilities',
+    params={'start_date': '2024-01-01', 'end_date': '2024-01-31'},
+    headers={'Authorization': 'Bearer {your_token}'}
+)
+
+data = response.json()
+```
+
+</CodeGroup>
+
+## Example Response
+
+```json
+{
+  "data": [
+    {
+      "date": "2024-01-01",
+      "available": true,
+      "rate": 250.00
+    },
+    {
+      "date": "2024-01-02",
+      "available": true,
+      "rate": 250.00
+    },
+    {
+      "date": "2024-01-05",
+      "available": false,
+      "rate": null
+    }
+  ]
+}
+```
+
