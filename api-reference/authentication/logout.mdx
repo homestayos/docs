@@ -1,0 +1,61 @@
+---
+title: 'Logout User'
+api: 'POST /logout'
+description: 'Logout the authenticated user and invalidate the token'
+---
+
+## Request
+
+Logout the currently authenticated user. This will invalidate the current authentication token.
+
+## Response
+
+Returns a success message.
+
+<ResponseField name="message" type="string">
+  Success message
+</ResponseField>
+
+## Example Request
+
+<CodeGroup>
+
+```bash cURL
+curl -X POST http://localhost:8000/api/logout \
+  -H "Authorization: Bearer {your_token}"
+```
+
+```javascript JavaScript
+const response = await fetch('http://localhost:8000/api/logout', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer {your_token}',
+  },
+});
+
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.post(
+    'http://localhost:8000/api/logout',
+    headers={
+        'Authorization': 'Bearer {your_token}',
+    }
+)
+
+data = response.json()
+```
+
+</CodeGroup>
+
+## Example Response
+
+```json
+{
+  "message": "Logged out successfully"
+}
+```
+

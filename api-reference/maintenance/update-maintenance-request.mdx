@@ -1,0 +1,135 @@
+---
+title: 'Update Maintenance Request'
+api: 'PUT /maintenance-requests/{id}'
+description: 'Update an existing maintenance request'
+---
+
+## Request
+
+Update a maintenance request. All fields are optional - only include the fields you want to update.
+
+<ParamField path="id" type="integer" required>
+  Maintenance request ID
+</ParamField>
+
+<ParamField body="title" type="string">
+  Request title
+</ParamField>
+
+<ParamField body="description" type="string">
+  Request description
+</ParamField>
+
+<ParamField body="category" type="string">
+  Request category
+</ParamField>
+
+<ParamField body="status" type="string" enum={['pending', 'in_progress', 'completed', 'cancelled']}>
+  Request status
+</ParamField>
+
+<ParamField body="priority" type="string" enum={['low', 'normal', 'high', 'urgent']}>
+  Request priority
+</ParamField>
+
+<ParamField body="property_id" type="integer">
+  Associated property ID
+</ParamField>
+
+<ParamField body="assigned_to_id" type="integer">
+  User ID to assign the request to
+</ParamField>
+
+<ParamField body="scheduled_date" type="string" format="date">
+  Scheduled date for maintenance
+</ParamField>
+
+<ParamField body="estimated_cost" type="number">
+  Estimated cost
+</ParamField>
+
+<ParamField body="actual_cost" type="number">
+  Actual cost
+</ParamField>
+
+<ParamField body="metadata" type="object">
+  Additional metadata as key-value pairs
+</ParamField>
+
+## Response
+
+Returns the updated maintenance request.
+
+<ResponseField name="message" type="string">
+  Success message
+</ResponseField>
+
+<ResponseField name="maintenance_request" type="object">
+  The updated maintenance request object
+</ResponseField>
+
+## Example Request
+
+<CodeGroup>
+
+```bash cURL
+curl -X PUT http://localhost:8000/api/maintenance-requests/1 \
+  -H "Authorization: Bearer {your_token}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "status": "in_progress",
+    "actual_cost": 175.00
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch('http://localhost:8000/api/maintenance-requests/1', {
+  method: 'PUT',
+  headers: {
+    'Authorization': 'Bearer {your_token}',
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    status: 'in_progress',
+    actual_cost: 175.00,
+  }),
+});
+
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.put(
+    'http://localhost:8000/api/maintenance-requests/1',
+    headers={
+        'Authorization': 'Bearer {your_token}',
+        'Content-Type': 'application/json',
+    },
+    json={
+        'status': 'in_progress',
+        'actual_cost': 175.00,
+    }
+)
+
+data = response.json()
+```
+
+</CodeGroup>
+
+## Example Response
+
+```json
+{
+  "message": "Maintenance request updated successfully",
+  "maintenance_request": {
+    "id": 1,
+    "title": "Fix leaking faucet",
+    "status": "in_progress",
+    "actual_cost": 175.00,
+    "completed_at": null
+  }
+}
+```
+

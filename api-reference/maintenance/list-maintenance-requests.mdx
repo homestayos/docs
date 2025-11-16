@@ -1,0 +1,188 @@
+---
+title: 'List Maintenance Requests'
+api: 'GET /maintenance-requests'
+description: 'Get all maintenance requests with optional filtering'
+---
+
+## Request
+
+Retrieve a paginated list of maintenance requests for the authenticated tenant with optional filtering.
+
+<ParamField body="status" type="string" enum={['pending', 'in_progress', 'completed', 'cancelled']}>
+  Filter by status
+</ParamField>
+
+<ParamField body="priority" type="string" enum={['low', 'normal', 'high', 'urgent']}>
+  Filter by priority
+</ParamField>
+
+<ParamField body="category" type="string">
+  Filter by category
+</ParamField>
+
+<ParamField body="property_id" type="integer">
+  Filter by property ID
+</ParamField>
+
+<ParamField body="assigned_to_id" type="integer">
+  Filter by assigned user ID
+</ParamField>
+
+<ParamField body="search" type="string">
+  Search in title and description
+</ParamField>
+
+<ParamField body="sort_by" type="string" default="created_at">
+  Sort field (e.g., created_at, scheduled_date)
+</ParamField>
+
+<ParamField body="sort_order" type="string" default="desc" enum={['asc', 'desc']}>
+  Sort order
+</ParamField>
+
+<ParamField body="per_page" type="integer" default={15}>
+  Number of items per page
+</ParamField>
+
+## Response
+
+Returns a paginated list of maintenance requests.
+
+<ResponseField name="data" type="array">
+  Array of maintenance request objects
+  <Expandable title="MaintenanceRequest Object">
+    <ResponseField name="id" type="integer">
+      Maintenance request ID
+    </ResponseField>
+    <ResponseField name="title" type="string">
+      Request title
+    </ResponseField>
+    <ResponseField name="description" type="string">
+      Request description
+    </ResponseField>
+    <ResponseField name="category" type="string">
+      Request category
+    </ResponseField>
+    <ResponseField name="status" type="string" enum={['pending', 'in_progress', 'completed', 'cancelled']}>
+      Request status
+    </ResponseField>
+    <ResponseField name="priority" type="string" enum={['low', 'normal', 'high', 'urgent']}>
+      Request priority
+    </ResponseField>
+    <ResponseField name="property_id" type="integer">
+      Associated property ID
+    </ResponseField>
+    <ResponseField name="assigned_to_id" type="integer">
+      Assigned user ID
+    </ResponseField>
+    <ResponseField name="scheduled_date" type="string" format="date">
+      Scheduled date for maintenance
+    </ResponseField>
+    <ResponseField name="estimated_cost" type="number">
+      Estimated cost
+    </ResponseField>
+    <ResponseField name="actual_cost" type="number">
+      Actual cost
+    </ResponseField>
+    <ResponseField name="completed_at" type="string" format="date-time">
+      Completion timestamp
+    </ResponseField>
+    <ResponseField name="property" type="object">
+      Property details (if included)
+    </ResponseField>
+    <ResponseField name="assignedTo" type="object">
+      Assigned user details (if included)
+    </ResponseField>
+    <ResponseField name="createdBy" type="object">
+      Creator user details (if included)
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+## Example Request
+
+<CodeGroup>
+
+```bash cURL
+curl -X GET http://localhost:8000/api/maintenance-requests \
+  -H "Authorization: Bearer {your_token}" \
+  -H "Content-Type: application/json" \
+  -G \
+  -d "status=pending" \
+  -d "priority=high" \
+  -d "per_page=20"
+```
+
+```javascript JavaScript
+const response = await fetch('http://localhost:8000/api/maintenance-requests?status=pending&priority=high&per_page=20', {
+  method: 'GET',
+  headers: {
+    'Authorization': 'Bearer {your_token}',
+    'Content-Type': 'application/json',
+  },
+});
+
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.get(
+    'http://localhost:8000/api/maintenance-requests',
+    headers={
+        'Authorization': 'Bearer {your_token}',
+        'Content-Type': 'application/json',
+    },
+    params={
+        'status': 'pending',
+        'priority': 'high',
+        'per_page': 20,
+    }
+)
+
+data = response.json()
+```
+
+</CodeGroup>
+
+## Example Response
+
+```json
+{
+  "data": [
+    {
+      "id": 1,
+      "title": "Fix leaking faucet",
+      "description": "Kitchen faucet is leaking",
+      "category": "Plumbing",
+      "status": "pending",
+      "priority": "high",
+      "property_id": 5,
+      "assigned_to_id": 2,
+      "scheduled_date": "2024-01-15",
+      "estimated_cost": 150.00,
+      "actual_cost": null,
+      "completed_at": null,
+      "property": {
+        "id": 5,
+        "name": "Beach House"
+      },
+      "assignedTo": {
+        "id": 2,
+        "name": "John Doe",
+        "email": "john@example.com"
+      },
+      "createdBy": {
+        "id": 1,
+        "name": "Jane Smith",
+        "email": "jane@example.com"
+      }
+    }
+  ],
+  "current_page": 1,
+  "per_page": 15,
+  "total": 1
+}
+```
+

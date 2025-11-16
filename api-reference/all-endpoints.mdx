@@ -1,0 +1,120 @@
+---
+title: 'All API Endpoints'
+description: 'Complete list of all available API endpoints organized by module'
+---
+
+## Overview
+
+This page provides a comprehensive overview of all **32 API endpoints** available in the HomestayOS API, organized by module.
+
+## Authentication (6 endpoints)
+
+- **[POST /register](/api-reference/authentication/register)** - Register a new user account
+- **[POST /login](/api-reference/authentication/login)** - Authenticate user with email and password
+- **[POST /logout](/api-reference/authentication/logout)** - Logout the authenticated user
+- **[POST /forgot-password](/api-reference/authentication/forgot-password)** - Request a password reset email
+- **[POST /reset-password](/api-reference/authentication/reset-password)** - Reset password using a reset token
+- **[GET /user](/api-reference/authentication/get-current-user)** - Get the authenticated user's information
+
+## Dashboard (1 endpoint)
+
+- **[GET /dashboard](/api-reference/dashboard/get-dashboard)** - Get dashboard overview data including statistics
+
+## Properties (6 endpoints)
+
+- **[GET /properties](/api-reference/properties/list-properties)** - List all properties with optional filtering
+- **[POST /properties](/api-reference/properties/create-property)** - Create a new property
+- **[GET /properties/{id}](/api-reference/properties/get-property)** - Get a specific property by ID
+- **[PUT /properties/{id}](/api-reference/properties/update-property)** - Update an existing property
+- **[DELETE /properties/{id}](/api-reference/properties/delete-property)** - Delete a property
+- **[GET /properties/{property}/availabilities](/api-reference/properties/get-availability)** - Get property availability calendar
+
+## Bookings (5 endpoints)
+
+- **[GET /bookings](/api-reference/bookings/list-bookings)** - List all bookings with optional filtering
+- **[POST /bookings](/api-reference/bookings/create-booking)** - Create a new booking
+- **[GET /bookings/{id}](/api-reference/bookings/get-booking)** - Get a specific booking by ID
+- **[PUT /bookings/{id}](/api-reference/bookings/update-booking)** - Update an existing booking
+- **[POST /bookings/{id}/cancel](/api-reference/bookings/cancel-booking)** - Cancel a booking
+
+## Guests (5 endpoints)
+
+- **[GET /guests](/api-reference/guests/list-guests)** - List all guests with optional filtering
+- **[POST /guests](/api-reference/guests/create-guest)** - Create a new guest
+- **[GET /guests/{id}](/api-reference/guests/get-guest)** - Get a specific guest by ID
+- **[PUT /guests/{id}](/api-reference/guests/update-guest)** - Update an existing guest
+- **[GET /guests/stats](/api-reference/guests/get-guest-stats)** - Get guest statistics
+
+## Calendar (1 endpoint)
+
+- **[GET /properties/{property}/calendar-url](/api-reference/calendar/get-calendar-url)** - Get iCal calendar URL for syncing
+
+## Analytics (2 endpoints)
+
+- **[GET /analytics/revenue](/api-reference/analytics/revenue)** - Get revenue analytics with date range filtering
+- **[GET /analytics/occupancy](/api-reference/analytics/occupancy)** - Get occupancy rate analytics
+
+## Conversations (3 endpoints)
+
+- **[GET /conversations](/api-reference/conversations/list-conversations)** - List all conversations/messages
+- **[POST /conversations](/api-reference/conversations/create-conversation)** - Create a new conversation
+- **[POST /conversations/{id}/messages](/api-reference/conversations/send-message)** - Send a message in a conversation
+
+## Tasks (3 endpoints)
+
+- **[GET /tasks](/api-reference/tasks/list-tasks)** - List all tasks with optional filtering
+- **[POST /tasks](/api-reference/tasks/create-task)** - Create a new task
+- **[PUT /tasks/{id}/status](/api-reference/tasks/update-task-status)** - Update the status of a task
+
+## Maintenance (12 endpoints)
+
+### Maintenance Requests (7 endpoints)
+
+- **[GET /maintenance-requests](/api-reference/maintenance/list-maintenance-requests)** - List all maintenance requests with optional filtering
+- **[POST /maintenance-requests](/api-reference/maintenance/create-maintenance-request)** - Create a new maintenance request
+- **[GET /maintenance-requests/{id}](/api-reference/maintenance/get-maintenance-request)** - Get a specific maintenance request by ID
+- **[PUT /maintenance-requests/{id}](/api-reference/maintenance/update-maintenance-request)** - Update an existing maintenance request
+- **[DELETE /maintenance-requests/{id}](/api-reference/maintenance/delete-maintenance-request)** - Delete a maintenance request
+- **[PUT /maintenance-requests/{id}/status](/api-reference/maintenance/update-maintenance-status)** - Update the status of a maintenance request
+- **[GET /maintenance-requests/stats](/api-reference/maintenance/get-maintenance-stats)** - Get maintenance request statistics
+
+### Maintenance Automations (5 endpoints)
+
+- **[GET /maintenance-automations](/api-reference/maintenance/list-maintenance-automations)** - List all maintenance automations with optional filtering
+- **[POST /maintenance-automations](/api-reference/maintenance/create-maintenance-automation)** - Create a new maintenance automation
+- **[GET /maintenance-automations/{id}](/api-reference/maintenance/get-maintenance-automation)** - Get a specific maintenance automation by ID
+- **[PUT /maintenance-automations/{id}](/api-reference/maintenance/update-maintenance-automation)** - Update an existing maintenance automation
+- **[DELETE /maintenance-automations/{id}](/api-reference/maintenance/delete-maintenance-automation)** - Delete a maintenance automation
+
+## Developer (5 endpoints)
+
+- **[GET /developer/api-keys](/api-reference/developer/api-keys)** - List all API keys
+- **[POST /developer/api-keys](/api-reference/developer/api-keys)** - Create a new API key
+- **[GET /developer/webhook-subscriptions](/api-reference/developer/webhooks)** - List webhook subscriptions
+- **[POST /developer/webhook-subscriptions](/api-reference/developer/webhooks)** - Create webhook subscription
+- **[GET /developer/webhook-subscriptions/available-events](/api-reference/developer/webhooks)** - Get available webhook events
+
+## Summary
+
+<CardGroup cols={2}>
+  <Card
+    title="Total Endpoints"
+    icon="code"
+  >
+    **51+ endpoints** across 11+ modules
+  </Card>
+  <Card
+    title="OpenAPI Spec"
+    icon="file-code"
+    href="/api-reference/openapi.json"
+  >
+    View the complete OpenAPI 3.0 specification
+  </Card>
+</CardGroup>
+
+## Quick Links
+
+- [API Introduction](/api-reference/introduction) - Get started with authentication and basics
+- [OpenAPI Specification](/api-reference/openapi.json) - Download the complete API specification
+- [API Reference (Auto-generated)](/api-reference/openapi-reference) - Automatically generated from OpenAPI spec
+

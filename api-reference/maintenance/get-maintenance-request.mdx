@@ -1,0 +1,122 @@
+---
+title: 'Get Maintenance Request'
+api: 'GET /maintenance-requests/{id}'
+description: 'Get a specific maintenance request by ID'
+---
+
+## Request
+
+Retrieve details of a specific maintenance request.
+
+<ParamField path="id" type="integer" required>
+  Maintenance request ID
+</ParamField>
+
+## Response
+
+Returns the maintenance request details.
+
+<ResponseField name="id" type="integer">
+  Maintenance request ID
+</ResponseField>
+
+<ResponseField name="title" type="string">
+  Request title
+</ResponseField>
+
+<ResponseField name="description" type="string">
+  Request description
+</ResponseField>
+
+<ResponseField name="category" type="string">
+  Request category
+</ResponseField>
+
+<ResponseField name="status" type="string" enum={['pending', 'in_progress', 'completed', 'cancelled']}>
+  Request status
+</ResponseField>
+
+<ResponseField name="priority" type="string" enum={['low', 'normal', 'high', 'urgent']}>
+  Request priority
+</ResponseField>
+
+<ResponseField name="property" type="object">
+  Associated property details
+</ResponseField>
+
+<ResponseField name="assignedTo" type="object">
+  Assigned user details
+</ResponseField>
+
+<ResponseField name="createdBy" type="object">
+  Creator user details
+</ResponseField>
+
+## Example Request
+
+<CodeGroup>
+
+```bash cURL
+curl -X GET http://localhost:8000/api/maintenance-requests/1 \
+  -H "Authorization: Bearer {your_token}"
+```
+
+```javascript JavaScript
+const response = await fetch('http://localhost:8000/api/maintenance-requests/1', {
+  method: 'GET',
+  headers: {
+    'Authorization': 'Bearer {your_token}',
+  },
+});
+
+const maintenanceRequest = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.get(
+    'http://localhost:8000/api/maintenance-requests/1',
+    headers={
+        'Authorization': 'Bearer {your_token}',
+    }
+)
+
+maintenance_request = response.json()
+```
+
+</CodeGroup>
+
+## Example Response
+
+```json
+{
+  "id": 1,
+  "title": "Fix leaking faucet",
+  "description": "Kitchen faucet is leaking",
+  "category": "Plumbing",
+  "status": "pending",
+  "priority": "high",
+  "property_id": 5,
+  "assigned_to_id": 2,
+  "scheduled_date": "2024-01-15",
+  "estimated_cost": 150.00,
+  "actual_cost": null,
+  "completed_at": null,
+  "property": {
+    "id": 5,
+    "name": "Beach House"
+  },
+  "assignedTo": {
+    "id": 2,
+    "name": "John Doe",
+    "email": "john@example.com"
+  },
+  "createdBy": {
+    "id": 1,
+    "name": "Jane Smith",
+    "email": "jane@example.com"
+  }
+}
+```
+

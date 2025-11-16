@@ -1,0 +1,65 @@
+---
+title: 'Delete Maintenance Automation'
+api: 'DELETE /maintenance-automations/{id}'
+description: 'Delete a maintenance automation'
+---
+
+## Request
+
+Delete a maintenance automation by ID.
+
+<ParamField path="id" type="integer" required>
+  Maintenance automation ID
+</ParamField>
+
+## Response
+
+Returns a success message.
+
+<ResponseField name="message" type="string">
+  Success message
+</ResponseField>
+
+## Example Request
+
+<CodeGroup>
+
+```bash cURL
+curl -X DELETE http://localhost:8000/api/maintenance-automations/1 \
+  -H "Authorization: Bearer {your_token}"
+```
+
+```javascript JavaScript
+const response = await fetch('http://localhost:8000/api/maintenance-automations/1', {
+  method: 'DELETE',
+  headers: {
+    'Authorization': 'Bearer {your_token}',
+  },
+});
+
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.delete(
+    'http://localhost:8000/api/maintenance-automations/1',
+    headers={
+        'Authorization': 'Bearer {your_token}',
+    }
+)
+
+data = response.json()
+```
+
+</CodeGroup>
+
+## Example Response
+
+```json
+{
+  "message": "Maintenance automation deleted successfully"
+}
+```
+

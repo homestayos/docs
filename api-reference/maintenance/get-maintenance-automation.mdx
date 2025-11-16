@@ -1,0 +1,97 @@
+---
+title: 'Get Maintenance Automation'
+api: 'GET /maintenance-automations/{id}'
+description: 'Get a specific maintenance automation by ID'
+---
+
+## Request
+
+Retrieve details of a specific maintenance automation.
+
+<ParamField path="id" type="integer" required>
+  Maintenance automation ID
+</ParamField>
+
+## Response
+
+Returns the maintenance automation details.
+
+<ResponseField name="id" type="integer">
+  Automation ID
+</ResponseField>
+
+<ResponseField name="name" type="string">
+  Automation name
+</ResponseField>
+
+<ResponseField name="description" type="string">
+  Automation description
+</ResponseField>
+
+<ResponseField name="property" type="object">
+  Associated property details
+</ResponseField>
+
+<ResponseField name="assignedTo" type="object">
+  Assigned user details
+</ResponseField>
+
+## Example Request
+
+<CodeGroup>
+
+```bash cURL
+curl -X GET http://localhost:8000/api/maintenance-automations/1 \
+  -H "Authorization: Bearer {your_token}"
+```
+
+```javascript JavaScript
+const response = await fetch('http://localhost:8000/api/maintenance-automations/1', {
+  method: 'GET',
+  headers: {
+    'Authorization': 'Bearer {your_token}',
+  },
+});
+
+const automation = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.get(
+    'http://localhost:8000/api/maintenance-automations/1',
+    headers={
+        'Authorization': 'Bearer {your_token}',
+    }
+)
+
+automation = response.json()
+```
+
+</CodeGroup>
+
+## Example Response
+
+```json
+{
+  "id": 1,
+  "name": "Post-checkout cleaning",
+  "description": "Automatically create cleaning task after checkout",
+  "property_id": 5,
+  "trigger": "after_checkout",
+  "title": "Clean property after checkout",
+  "priority": "normal",
+  "is_active": true,
+  "property": {
+    "id": 5,
+    "name": "Beach House"
+  },
+  "assignedTo": {
+    "id": 2,
+    "name": "John Doe",
+    "email": "john@example.com"
+  }
+}
+```
+

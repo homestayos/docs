@@ -1,0 +1,94 @@
+---
+title: 'Update Maintenance Request Status'
+api: 'PUT /maintenance-requests/{id}/status'
+description: 'Update the status of a maintenance request'
+---
+
+## Request
+
+Update only the status of a maintenance request. This is a convenience endpoint for quickly updating status without sending the full request body.
+
+<ParamField path="id" type="integer" required>
+  Maintenance request ID
+</ParamField>
+
+<ParamField body="status" type="string" required enum={['pending', 'in_progress', 'completed', 'cancelled']}>
+  New status
+</ParamField>
+
+## Response
+
+Returns the updated maintenance request.
+
+<ResponseField name="message" type="string">
+  Success message
+</ResponseField>
+
+<ResponseField name="maintenance_request" type="object">
+  The updated maintenance request object
+</ResponseField>
+
+<Note>
+  When status is changed to "completed", the `completed_at` timestamp is automatically set. When changed from "completed" to another status, `completed_at` is cleared.
+</Note>
+
+## Example Request
+
+<CodeGroup>
+
+```bash cURL
+curl -X PUT http://localhost:8000/api/maintenance-requests/1/status \
+  -H "Authorization: Bearer {your_token}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "status": "completed"
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch('http://localhost:8000/api/maintenance-requests/1/status', {
+  method: 'PUT',
+  headers: {
+    'Authorization': 'Bearer {your_token}',
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    status: 'completed',
+  }),
+});
+
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.put(
+    'http://localhost:8000/api/maintenance-requests/1/status',
+    headers={
+        'Authorization': 'Bearer {your_token}',
+        'Content-Type': 'application/json',
+    },
+    json={
+        'status': 'completed',
+    }
+)
+
+data = response.json()
+```
+
+</CodeGroup>
+
+## Example Response
+
+```json
+{
+  "message": "Maintenance request status updated successfully",
+  "maintenance_request": {
+    "id": 1,
+    "status": "completed",
+    "completed_at": "2024-01-15T10:30:00Z"
+  }
+}
+```
+

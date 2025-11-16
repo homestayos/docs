@@ -1,0 +1,121 @@
+---
+title: 'Get Dashboard Data'
+api: 'GET /dashboard'
+description: 'Get dashboard overview data including statistics and recent activities'
+---
+
+## Request
+
+Retrieve dashboard overview data for the authenticated tenant, including statistics, recent bookings, upcoming check-ins/check-outs, and other key metrics.
+
+## Response
+
+Returns dashboard data with various statistics and recent activities.
+
+<ResponseField name="stats" type="object">
+  Dashboard statistics
+  <Expandable title="Stats Object">
+    <ResponseField name="total_properties" type="integer">
+      Total number of properties
+    </ResponseField>
+    <ResponseField name="active_bookings" type="integer">
+      Number of active bookings
+    </ResponseField>
+    <ResponseField name="upcoming_checkins" type="integer">
+      Number of upcoming check-ins
+    </ResponseField>
+    <ResponseField name="upcoming_checkouts" type="integer">
+      Number of upcoming check-outs
+    </ResponseField>
+    <ResponseField name="revenue_today" type="number">
+      Revenue for today
+    </ResponseField>
+    <ResponseField name="revenue_this_month" type="number">
+      Revenue for this month
+    </ResponseField>
+    <ResponseField name="occupancy_rate" type="number">
+      Current occupancy rate percentage
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="recent_bookings" type="array">
+  Array of recent booking objects
+</ResponseField>
+
+<ResponseField name="upcoming_checkins" type="array">
+  Array of upcoming check-in booking objects
+</ResponseField>
+
+<ResponseField name="upcoming_checkouts" type="array">
+  Array of upcoming check-out booking objects
+</ResponseField>
+
+<ResponseField name="recent_activities" type="array">
+  Array of recent activity objects
+</ResponseField>
+
+## Example Request
+
+<CodeGroup>
+
+```bash cURL
+curl -X GET http://localhost:8000/api/dashboard \
+  -H "Authorization: Bearer {your_token}"
+```
+
+```javascript JavaScript
+const response = await fetch('http://localhost:8000/api/dashboard', {
+  method: 'GET',
+  headers: {
+    'Authorization': 'Bearer {your_token}',
+  },
+});
+
+const dashboard = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.get(
+    'http://localhost:8000/api/dashboard',
+    headers={
+        'Authorization': 'Bearer {your_token}',
+    }
+)
+
+dashboard = response.json()
+```
+
+</CodeGroup>
+
+## Example Response
+
+```json
+{
+  "stats": {
+    "total_properties": 5,
+    "active_bookings": 12,
+    "upcoming_checkins": 3,
+    "upcoming_checkouts": 2,
+    "revenue_today": 1250.00,
+    "revenue_this_month": 45000.00,
+    "occupancy_rate": 78.5
+  },
+  "recent_bookings": [
+    {
+      "id": 1,
+      "property_name": "Beach House",
+      "guest_name": "John Doe",
+      "check_in_date": "2024-01-15",
+      "check_out_date": "2024-01-20",
+      "total_amount": 1250.00
+    }
+  ],
+  "upcoming_checkins": [...],
+  "upcoming_checkouts": [...],
+  "recent_activities": [...]
+}
+```
+

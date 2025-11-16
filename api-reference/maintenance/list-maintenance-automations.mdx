@@ -1,0 +1,122 @@
+---
+title: 'List Maintenance Automations'
+api: 'GET /maintenance-automations'
+description: 'Get all maintenance automations with optional filtering'
+---
+
+## Request
+
+Retrieve a list of maintenance automations for the authenticated tenant with optional filtering.
+
+<ParamField body="property_id" type="integer">
+  Filter by property ID (includes global automations if not specified)
+</ParamField>
+
+<ParamField body="trigger" type="string">
+  Filter by trigger type
+</ParamField>
+
+<ParamField body="is_active" type="boolean">
+  Filter by active status
+</ParamField>
+
+## Response
+
+Returns an array of maintenance automation objects.
+
+<ResponseField name="id" type="integer">
+  Automation ID
+</ResponseField>
+
+<ResponseField name="name" type="string">
+  Automation name
+</ResponseField>
+
+<ResponseField name="description" type="string">
+  Automation description
+</ResponseField>
+
+<ResponseField name="property_id" type="integer">
+  Associated property ID (null for global automations)
+</ResponseField>
+
+<ResponseField name="trigger" type="string" enum={['after_booking_confirmed', 'before_checkin', 'after_checkin', 'before_checkout', 'after_checkout', 'guest_message', 'scheduled_maintenance', 'inspection_due', 'property_age_days', 'booking_count']}>
+  Trigger type
+</ResponseField>
+
+<ResponseField name="is_active" type="boolean">
+  Whether the automation is active
+</ResponseField>
+
+<ResponseField name="property" type="object">
+  Property details (if included)
+</ResponseField>
+
+<ResponseField name="assignedTo" type="object">
+  Assigned user details (if included)
+</ResponseField>
+
+## Example Request
+
+<CodeGroup>
+
+```bash cURL
+curl -X GET http://localhost:8000/api/maintenance-automations \
+  -H "Authorization: Bearer {your_token}" \
+  -G \
+  -d "property_id=5" \
+  -d "is_active=true"
+```
+
+```javascript JavaScript
+const response = await fetch('http://localhost:8000/api/maintenance-automations?property_id=5&is_active=true', {
+  method: 'GET',
+  headers: {
+    'Authorization': 'Bearer {your_token}',
+  },
+});
+
+const automations = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.get(
+    'http://localhost:8000/api/maintenance-automations',
+    headers={
+        'Authorization': 'Bearer {your_token}',
+    },
+    params={
+        'property_id': 5,
+        'is_active': True,
+    }
+)
+
+automations = response.json()
+```
+
+</CodeGroup>
+
+## Example Response
+
+```json
+[
+  {
+    "id": 1,
+    "name": "Post-checkout cleaning",
+    "description": "Automatically create cleaning task after checkout",
+    "property_id": 5,
+    "trigger": "after_checkout",
+    "trigger_offset_hours": 0,
+    "title": "Clean property after checkout",
+    "priority": "normal",
+    "is_active": true,
+    "property": {
+      "id": 5,
+      "name": "Beach House"
+    }
+  }
+]
+```
+

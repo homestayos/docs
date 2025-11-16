@@ -1,0 +1,126 @@
+---
+title: 'Register User'
+api: 'POST /register'
+description: 'Register a new user account'
+---
+
+## Request
+
+Register a new user account with email and password.
+
+<ParamField body="name" type="string" required>
+  User's full name
+</ParamField>
+
+<ParamField body="email" type="string" format="email" required>
+  User's email address
+</ParamField>
+
+<ParamField body="password" type="string" format="password" required>
+  User's password (minimum 8 characters)
+</ParamField>
+
+<ParamField body="password_confirmation" type="string" format="password" required>
+  Password confirmation (must match password)
+</ParamField>
+
+<ParamField body="tenant_slug" type="string">
+  Optional: The slug of the tenant/company to join
+</ParamField>
+
+## Response
+
+Returns the created user and authentication token.
+
+<ResponseField name="token" type="string">
+  Authentication token to be used in subsequent requests
+</ResponseField>
+
+<ResponseField name="user" type="object">
+  Details of the registered user
+  <Expandable title="User Object">
+    <ResponseField name="id" type="integer">
+      User ID
+    </ResponseField>
+    <ResponseField name="name" type="string">
+      User's full name
+    </ResponseField>
+    <ResponseField name="email" type="string">
+      User's email address
+    </ResponseField>
+    <ResponseField name="tenant_id" type="integer">
+      ID of the tenant/organization the user belongs to
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+## Example Request
+
+<CodeGroup>
+
+```bash cURL
+curl -X POST http://localhost:8000/api/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "John Doe",
+    "email": "john@example.com",
+    "password": "password123",
+    "password_confirmation": "password123",
+    "tenant_slug": "my-company"
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch('http://localhost:8000/api/register', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    name: 'John Doe',
+    email: 'john@example.com',
+    password: 'password123',
+    password_confirmation: 'password123',
+    tenant_slug: 'my-company',
+  }),
+});
+
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.post(
+    'http://localhost:8000/api/register',
+    headers={
+        'Content-Type': 'application/json',
+    },
+    json={
+        'name': 'John Doe',
+        'email': 'john@example.com',
+        'password': 'password123',
+        'password_confirmation': 'password123',
+        'tenant_slug': 'my-company',
+    }
+)
+
+data = response.json()
+```
+
+</CodeGroup>
+
+## Example Response
+
+```json
+{
+  "token": "your_auth_token_here",
+  "user": {
+    "id": 1,
+    "name": "John Doe",
+    "email": "john@example.com",
+    "tenant_id": 1
+  }
+}
+```
+

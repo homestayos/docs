@@ -8,19 +8,44 @@
     "dark": "#CC4A03"
   },
   "favicon": "/favicon.svg",
+  "api": {
+    "baseUrl": "http://localhost:8000/api",
+    "auth": {
+      "method": "bearer",
+      "token": "{token}"
+    }
+  },
+  "apiReference": {
+    "spec": {
+      "url": "/api-reference/openapi.json"
+    }
+  },
   "navigation": {
     "groups": [
       {
         "group": "Getting Started",
         "pages": [
-          "api-reference/introduction"
+          "api-reference/introduction",
+          "api-reference/all-endpoints",
+          "api-reference/endpoint-summary",
+          "api-reference/openapi-reference"
         ]
       },
       {
         "group": "Authentication",
         "pages": [
+          "api-reference/authentication/register",
           "api-reference/authentication/login",
+          "api-reference/authentication/logout",
+          "api-reference/authentication/forgot-password",
+          "api-reference/authentication/reset-password",
           "api-reference/authentication/get-current-user"
+        ]
+      },
+      {
+        "group": "Dashboard",
+        "pages": [
+          "api-reference/dashboard/get-dashboard"
         ]
       },
       {
@@ -84,6 +109,23 @@
         ]
       },
       {
+        "group": "Maintenance",
+        "pages": [
+          "api-reference/maintenance/list-maintenance-requests",
+          "api-reference/maintenance/create-maintenance-request",
+          "api-reference/maintenance/get-maintenance-request",
+          "api-reference/maintenance/update-maintenance-request",
+          "api-reference/maintenance/delete-maintenance-request",
+          "api-reference/maintenance/update-maintenance-status",
+          "api-reference/maintenance/get-maintenance-stats",
+          "api-reference/maintenance/list-maintenance-automations",
+          "api-reference/maintenance/create-maintenance-automation",
+          "api-reference/maintenance/get-maintenance-automation",
+          "api-reference/maintenance/update-maintenance-automation",
+          "api-reference/maintenance/delete-maintenance-automation"
+        ]
+      },
+      {
         "group": "Developer",
         "pages": [
           "api-reference/developer/api-keys",
@@ -95,14 +137,9 @@
   "global": {
     "anchors": [
       {
-        "anchor": "Documentation",
-        "href": "https://mintlify.com/docs",
+        "anchor": "API Documentation",
+        "href": "https://homestayos.mintlify.app/",
         "icon": "book-open-cover"
-      },
-      {
-        "anchor": "Blog",
-        "href": "https://mintlify.com/blog",
-        "icon": "newspaper"
       }
     ]
   },

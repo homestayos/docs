@@ -1,0 +1,133 @@
+---
+title: 'Complete API Endpoint Summary'
+description: 'Complete list of all API endpoint groups and their availability'
+---
+
+## Overview
+
+The HomestayOS API contains **234+ endpoints** organized into the following groups. This page provides an overview of all available endpoint groups. Detailed documentation is available for endpoints marked with ✓.
+
+## Endpoint Groups
+
+### Authentication (6 endpoints) ✓
+- Register, Login, Logout, Forgot Password, Reset Password, Get Current User
+- **Status**: Fully documented
+
+### Dashboard (1 endpoint) ✓
+- Get Dashboard Data
+- **Status**: Fully documented
+
+### Properties (54+ endpoints) ⚠️
+- Basic CRUD operations ✓
+- Property Photos, Amenities, Cancellation Policies, Seasonal Rates, Pricing Rules
+- Availability Management, Task Templates, Message Templates
+- OTA Credentials, Rate Mappings, Calendar Integration
+- **Status**: Basic CRUD documented, advanced features pending
+
+### Bookings (10 endpoints) ⚠️
+- Basic CRUD operations ✓
+- Cancel Booking ✓
+- Booking Payments, Convert Inquiry to Booking
+- **Status**: Basic operations documented, payments pending
+
+### Guests (5 endpoints) ✓
+- List, Create, Get, Update, Delete, Stats
+- **Status**: Fully documented
+
+### Calendar (2+ endpoints) ⚠️
+- Get Calendar URL ✓
+- Calendar Sync, Sync Logs, Push Rates, Preview Rates
+- **Status**: Basic endpoint documented, sync features pending
+
+### Analytics (5 endpoints) ⚠️
+- Revenue ✓, Occupancy ✓
+- Channel Performance, Booking Trends, Expenses, Earnings
+- **Status**: Basic analytics documented, advanced analytics pending
+
+### Conversations (9 endpoints) ⚠️
+- List, Create, Send Message ✓
+- Bulk Update, Status, Priority, Tags
+- **Status**: Basic operations documented, advanced features pending
+
+### Tasks (12 endpoints) ⚠️
+- List, Create, Update Status ✓
+- Get, Update, Delete, Stats, Task Automations
+- **Status**: Basic operations documented, full CRUD pending
+
+### Maintenance (12 endpoints) ✓
+- Maintenance Requests (7 endpoints) ✓
+- Maintenance Automations (5 endpoints) ✓
+- **Status**: Fully documented
+
+### Developer (20 endpoints) ⚠️
+- API Keys (List, Create) ✓
+- Webhook Subscriptions (List, Create, Available Events) ✓
+- Regenerate Secret, Test Webhook, Webhook Deliveries
+- **Status**: Basic operations documented, advanced features pending
+
+### User Settings (4 endpoints) ⚠️
+- Profile Management, Payment Settings, Notification Settings, Onboarding
+- **Status**: Not yet documented
+
+### Staff & Permissions (12 endpoints) ⚠️
+- Staff Management, Roles, Permissions
+- **Status**: Not yet documented
+
+### Inquiries (10 endpoints) ⚠️
+- Inquiry Management, Convert to Booking, Respond, Tags
+- **Status**: Not yet documented
+
+### Quick Replies (4 endpoints) ⚠️
+- Quick Reply Templates, Usage Tracking
+- **Status**: Not yet documented
+
+### Subscription (5 endpoints) ⚠️
+- Subscription Management, Pricing Plans, Activation, Cancellation
+- **Status**: Not yet documented
+
+### Payments (4 endpoints) ⚠️
+- Create Payment, Payment History, Payment Settings
+- **Status**: Not yet documented
+
+### Payouts (6 endpoints) ⚠️
+- Payout Management, Request, Process, Cancel
+- **Status**: Not yet documented
+
+### Inventory (22 endpoints) ⚠️
+- Inventory Management, Stock Movements, Suppliers, Purchase Orders
+- **Status**: Not yet documented
+
+### Notifications (8 endpoints) ⚠️
+- Notification Management, Read/Unread Status
+- **Status**: Not yet documented
+
+### Conflicts (8 endpoints) ⚠️
+- Booking Conflict Detection, Resolution, Bulk Operations
+- **Status**: Not yet documented
+
+### OTA Integration (10+ endpoints) ⚠️
+- OTA Credentials, OAuth Flow, Rate Mappings, Calendar Sync
+- **Status**: Not yet documented
+
+### Tenant (4 endpoints) ⚠️
+- Tenant Lookup, Current Tenant, Update Tenant
+- **Status**: Not yet documented
+
+### Guest Portal (6 endpoints) ⚠️
+- Guest Authentication, Bookings, Profile, Messages
+- **Status**: Not yet documented
+
+## Documentation Status
+
+- ✓ **Fully Documented**: Authentication, Dashboard, Guests, Maintenance
+- ⚠️ **Partially Documented**: Properties, Bookings, Calendar, Analytics, Conversations, Tasks, Developer
+- ❌ **Not Yet Documented**: User Settings, Staff & Permissions, Inquiries, Quick Replies, Subscription, Payments, Payouts, Inventory, Notifications, Conflicts, OTA Integration, Tenant, Guest Portal
+
+## Getting Started
+
+Start with the [API Introduction](/api-reference/introduction) to learn about authentication and base URLs, then explore the fully documented endpoint groups.
+
+<Note>
+  This API is actively being developed. Some endpoints may be added, modified, or deprecated. Check the [OpenAPI Specification](/api-reference/openapi.json) for the most up-to-date endpoint definitions.
+</Note>
+

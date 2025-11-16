@@ -1,1 +1,2296 @@
-{"openapi":"3.0.0","info":{"title":"HomestayOS API","description":"API documentation for HomestayOS - A comprehensive property management system for homestays and vacation rentals. This API enables developers to build integrations, automate workflows, and access property management data programmatically.","version":"1.0.0","contact":{"name":"HomestayOS Support","email":"support@homestayos.com"},"license":{"name":"Proprietary"}},"servers":[{"url":"http://127.0.0.1:8000/api","description":"Production server"},{"url":"http://localhost:8000/api","description":"Local development server"}],"tags":[{"name":"Authentication","description":"User authentication and authorization"},{"name":"Properties","description":"Property management and operations"},{"name":"Bookings","description":"Booking management and operations"},{"name":"Guests","description":"Guest management and operations"},{"name":"Calendar","description":"Calendar and availability management"},{"name":"Analytics","description":"Analytics and reporting endpoints"},{"name":"Conversations","description":"Message and conversation management"},{"name":"Tasks","description":"Task and automation management"},{"name":"Developer","description":"Developer API key and webhook management"}],"paths":{"/login":{"post":{"tags":["Authentication"],"summary":"Authenticate user","description":"Login with email and password to receive an authentication token","security":[],"requestBody":{"required":true,"content":{"application/json":{"schema":{"type":"object","required":["email","password"],"properties":{"email":{"type":"string","format":"email","example":"user@example.com"},"password":{"type":"string","format":"password","example":"password123"},"tenant_slug":{"type":"string","example":"my-company"}}}}}},"responses":{"200":{"description":"Authentication successful","content":{"application/json":{"schema":{"type":"object","properties":{"token":{"type":"string"},"user":{"$ref":"#/components/schemas/User"}}}}}},"401":{"$ref":"#/components/responses/Unauthorized"}}}},"/user":{"get":{"tags":["Authentication"],"summary":"Get current user","description":"Get the authenticated user's information","security":[{"bearerAuth":[]},{"apiKeyAuth":[]}],"responses":{"200":{"description":"User information","content":{"application/json":{"schema":{"$ref":"#/components/schemas/User"}}}}}}},"/properties":{"get":{"tags":["Properties"],"summary":"List properties","description":"Get all properties for the authenticated tenant with optional filtering","security":[{"bearerAuth":[]},{"apiKeyAuth":[]}],"parameters":[{"name":"status","in":"query","schema":{"type":"string","enum":["active","inactive"]}},{"name":"search","in":"query","schema":{"type":"string"}},{"name":"per_page","in":"query","schema":{"type":"integer","default":15}}],"responses":{"200":{"description":"List of properties","content":{"application/json":{"schema":{"type":"object","properties":{"data":{"type":"array","items":{"$ref":"#/components/schemas/Property"}}}}}}}}},"post":{"tags":["Properties"],"summary":"Create property","description":"Create a new property","security":[{"bearerAuth":[]},{"apiKeyAuth":[]}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/PropertyCreate"}}}},"responses":{"201":{"description":"Property created","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Property"}}}}}}},"/properties/{id}":{"get":{"tags":["Properties"],"summary":"Get property","description":"Get a specific property by ID","security":[{"bearerAuth":[]},{"apiKeyAuth":[]}],"parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer"}}],"responses":{"200":{"description":"Property details","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Property"}}}}}},"put":{"tags":["Properties"],"summary":"Update property","description":"Update an existing property","security":[{"bearerAuth":[]},{"apiKeyAuth":[]}],"parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer"}}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/PropertyUpdate"}}}},"responses":{"200":{"description":"Property updated","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Property"}}}}}},"delete":{"tags":["Properties"],"summary":"Delete property","description":"Delete a property","security":[{"bearerAuth":[]},{"apiKeyAuth":[]}],"parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer"}}],"responses":{"200":{"description":"Property deleted"}}}},"/properties/{property}/availabilities":{"get":{"tags":["Properties","Calendar"],"summary":"Get property availability","description":"Get availability calendar for a property","security":[{"bearerAuth":[]},{"apiKeyAuth":[]}],"parameters":[{"name":"property","in":"path","required":true,"schema":{"type":"integer"}},{"name":"start_date","in":"query","schema":{"type":"string","format":"date"}},{"name":"end_date","in":"query","schema":{"type":"string","format":"date"}}],"responses":{"200":{"description":"Availability data","content":{"application/json":{"schema":{"type":"object","properties":{"data":{"type":"array","items":{"$ref":"#/components/schemas/Availability"}}}}}}}}}},"/bookings":{"get":{"tags":["Bookings"],"summary":"List bookings","description":"Get all bookings with optional filtering","security":[{"bearerAuth":[]},{"apiKeyAuth":[]}],"parameters":[{"name":"status","in":"query","schema":{"type":"string","enum":["pending","confirmed","checked_in","checked_out","cancelled"]}},{"name":"property_id","in":"query","schema":{"type":"integer"}},{"name":"start_date","in":"query","schema":{"type":"string","format":"date"}},{"name":"end_date","in":"query","schema":{"type":"string","format":"date"}},{"name":"filter","in":"query","schema":{"type":"string","enum":["upcoming","past","active"]}}],"responses":{"200":{"description":"List of bookings","content":{"application/json":{"schema":{"type":"object","properties":{"data":{"type":"array","items":{"$ref":"#/components/schemas/Booking"}}}}}}}}},"post":{"tags":["Bookings"],"summary":"Create booking","description":"Create a new booking","security":[{"bearerAuth":[]},{"apiKeyAuth":[]}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/BookingCreate"}}}},"responses":{"201":{"description":"Booking created","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Booking"}}}}}}},"/bookings/{id}":{"get":{"tags":["Bookings"],"summary":"Get booking","description":"Get a specific booking by ID","security":[{"bearerAuth":[]},{"apiKeyAuth":[]}],"parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer"}}],"responses":{"200":{"description":"Booking details","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Booking"}}}}}},"put":{"tags":["Bookings"],"summary":"Update booking","description":"Update an existing booking","security":[{"bearerAuth":[]},{"apiKeyAuth":[]}],"parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer"}}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/BookingUpdate"}}}},"responses":{"200":{"description":"Booking updated","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Booking"}}}}}}},"/bookings/{id}/cancel":{"post":{"tags":["Bookings"],"summary":"Cancel booking","description":"Cancel a booking","security":[{"bearerAuth":[]},{"apiKeyAuth":[]}],"parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer"}}],"responses":{"200":{"description":"Booking cancelled","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Booking"}}}}}}},"/guests":{"get":{"tags":["Guests"],"summary":"List guests","description":"Get all guests with optional filtering","security":[{"bearerAuth":[]},{"apiKeyAuth":[]}],"parameters":[{"name":"search","in":"query","schema":{"type":"string"}},{"name":"per_page","in":"query","schema":{"type":"integer","default":15}}],"responses":{"200":{"description":"List of guests","content":{"application/json":{"schema":{"type":"object","properties":{"data":{"type":"array","items":{"$ref":"#/components/schemas/Guest"}}}}}}}}},"post":{"tags":["Guests"],"summary":"Create guest","description":"Create a new guest","security":[{"bearerAuth":[]},{"apiKeyAuth":[]}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/GuestCreate"}}}},"responses":{"201":{"description":"Guest created","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Guest"}}}}}}},"/guests/{id}":{"get":{"tags":["Guests"],"summary":"Get guest","description":"Get a specific guest by ID","security":[{"bearerAuth":[]},{"apiKeyAuth":[]}],"parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer"}}],"responses":{"200":{"description":"Guest details","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Guest"}}}}}},"put":{"tags":["Guests"],"summary":"Update guest","description":"Update an existing guest","security":[{"bearerAuth":[]},{"apiKeyAuth":[]}],"parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer"}}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/GuestUpdate"}}}},"responses":{"200":{"description":"Guest updated","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Guest"}}}}}}},"/guests/stats":{"get":{"tags":["Guests","Analytics"],"summary":"Get guest statistics","description":"Get statistics about guests","security":[{"bearerAuth":[]},{"apiKeyAuth":[]}],"responses":{"200":{"description":"Guest statistics","content":{"application/json":{"schema":{"type":"object","properties":{"total_guests":{"type":"integer"},"new_this_month":{"type":"integer"},"repeat_guests":{"type":"integer"}}}}}}}}},"/properties/{property}/calendar-url":{"get":{"tags":["Calendar"],"summary":"Get calendar sync URL","description":"Get iCal calendar URL for syncing with external calendar applications","security":[{"bearerAuth":[]},{"apiKeyAuth":[]}],"parameters":[{"name":"property","in":"path","required":true,"schema":{"type":"integer"}}],"responses":{"200":{"description":"Calendar URL","content":{"application/json":{"schema":{"type":"object","properties":{"url":{"type":"string","format":"uri"}}}}}}}}},"/analytics/revenue":{"get":{"tags":["Analytics"],"summary":"Get revenue analytics","description":"Get revenue analytics with date range filtering","security":[{"bearerAuth":[]},{"apiKeyAuth":[]}],"parameters":[{"name":"start_date","in":"query","schema":{"type":"string","format":"date"}},{"name":"end_date","in":"query","schema":{"type":"string","format":"date"}},{"name":"property_id","in":"query","schema":{"type":"integer"}}],"responses":{"200":{"description":"Revenue analytics","content":{"application/json":{"schema":{"type":"object","properties":{"total_revenue":{"type":"number"},"period_revenue":{"type":"number"},"by_property":{"type":"array"}}}}}}}}},"/analytics/occupancy":{"get":{"tags":["Analytics"],"summary":"Get occupancy analytics","description":"Get occupancy rate analytics","security":[{"bearerAuth":[]},{"apiKeyAuth":[]}],"parameters":[{"name":"start_date","in":"query","schema":{"type":"string","format":"date"}},{"name":"end_date","in":"query","schema":{"type":"string","format":"date"}}],"responses":{"200":{"description":"Occupancy analytics","content":{"application/json":{"schema":{"type":"object","properties":{"occupancy_rate":{"type":"number"},"booked_nights":{"type":"integer"},"available_nights":{"type":"integer"}}}}}}}}},"/conversations":{"get":{"tags":["Conversations"],"summary":"List conversations","description":"Get all conversations/messages","security":[{"bearerAuth":[]},{"apiKeyAuth":[]}],"parameters":[{"name":"status","in":"query","schema":{"type":"string"}},{"name":"per_page","in":"query","schema":{"type":"integer","default":15}}],"responses":{"200":{"description":"List of conversations","content":{"application/json":{"schema":{"type":"object","properties":{"data":{"type":"array","items":{"$ref":"#/components/schemas/Conversation"}}}}}}}}},"post":{"tags":["Conversations"],"summary":"Create conversation","description":"Create a new conversation","security":[{"bearerAuth":[]},{"apiKeyAuth":[]}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"type":"object","required":["guest_id","subject","message"],"properties":{"guest_id":{"type":"integer"},"subject":{"type":"string"},"message":{"type":"string"}}}}}},"responses":{"201":{"description":"Conversation created","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Conversation"}}}}}}},"/conversations/{id}/messages":{"post":{"tags":["Conversations"],"summary":"Send message","description":"Send a message in a conversation","security":[{"bearerAuth":[]},{"apiKeyAuth":[]}],"parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer"}}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"type":"object","required":["message"],"properties":{"message":{"type":"string"}}}}}},"responses":{"201":{"description":"Message sent","content":{"application/json":{"schema":{"type":"object","properties":{"success":{"type":"boolean"},"message":{"$ref":"#/components/schemas/Message"}}}}}}}}},"/tasks":{"get":{"tags":["Tasks"],"summary":"List tasks","description":"Get all tasks with optional filtering","security":[{"bearerAuth":[]},{"apiKeyAuth":[]}],"parameters":[{"name":"status","in":"query","schema":{"type":"string","enum":["pending","in_progress","completed","cancelled"]}},{"name":"property_id","in":"query","schema":{"type":"integer"}}],"responses":{"200":{"description":"List of tasks","content":{"application/json":{"schema":{"type":"object","properties":{"data":{"type":"array","items":{"$ref":"#/components/schemas/Task"}}}}}}}}},"post":{"tags":["Tasks"],"summary":"Create task","description":"Create a new task","security":[{"bearerAuth":[]},{"apiKeyAuth":[]}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"type":"object","required":["title","property_id"],"properties":{"title":{"type":"string"},"description":{"type":"string"},"property_id":{"type":"integer"},"assigned_to":{"type":"integer"},"due_date":{"type":"string","format":"date-time"}}}}}},"responses":{"201":{"description":"Task created","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Task"}}}}}}},"/tasks/{id}/status":{"put":{"tags":["Tasks"],"summary":"Update task status","description":"Update the status of a task","security":[{"bearerAuth":[]},{"apiKeyAuth":[]}],"parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer"}}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"type":"object","required":["status"],"properties":{"status":{"type":"string","enum":["pending","in_progress","completed","cancelled"]}}}}}},"responses":{"200":{"description":"Task status updated","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Task"}}}}}}},"/developer/api-keys":{"get":{"tags":["Developer"],"summary":"List API keys","description":"Get all API keys for the authenticated tenant","security":[{"bearerAuth":[]}],"responses":{"200":{"description":"Success","content":{"application/json":{"schema":{"type":"object","properties":{"success":{"type":"boolean"},"data":{"type":"array","items":{"$ref":"#/components/schemas/ApiKey"}}}}}}}}},"post":{"tags":["Developer"],"summary":"Create API key","description":"Create a new API key for developer access","security":[{"bearerAuth":[]}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"type":"object","required":["name"],"properties":{"name":{"type":"string","example":"My Smart Key Integration"},"expires_at":{"type":"string","format":"date-time"}}}}}},"responses":{"201":{"description":"API key created","content":{"application/json":{"schema":{"type":"object","properties":{"success":{"type":"boolean"},"data":{"$ref":"#/components/schemas/ApiKeyWithSecret"},"message":{"type":"string"}}}}}}}}},"/developer/webhook-subscriptions":{"get":{"tags":["Developer"],"summary":"List webhook subscriptions","description":"Get all webhook subscriptions for the authenticated tenant","security":[{"bearerAuth":[]}],"responses":{"200":{"description":"Success","content":{"application/json":{"schema":{"type":"object","properties":{"success":{"type":"boolean"},"data":{"type":"array","items":{"$ref":"#/components/schemas/WebhookSubscription"}}}}}}}}},"post":{"tags":["Developer"],"summary":"Create webhook subscription","description":"Subscribe to webhook events","security":[{"bearerAuth":[]}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"type":"object","required":["developer_api_key_id","name","url","events"],"properties":{"developer_api_key_id":{"type":"integer"},"name":{"type":"string","example":"Smart Key Automation"},"url":{"type":"string","format":"uri","example":"https://example.com/webhooks/smart-key"},"events":{"type":"array","items":{"type":"string"},"example":["booking.check_in","booking.check_out"]},"secret":{"type":"string"},"timeout":{"type":"integer","default":30},"retry_attempts":{"type":"integer","default":3}}}}}},"responses":{"201":{"description":"Webhook subscription created","content":{"application/json":{"schema":{"type":"object","properties":{"success":{"type":"boolean"},"data":{"$ref":"#/components/schemas/WebhookSubscription"}}}}}}}}},"/developer/webhook-subscriptions/available-events":{"get":{"tags":["Developer"],"summary":"Get available webhook events","description":"List all available webhook events that can be subscribed to","security":[{"bearerAuth":[]}],"responses":{"200":{"description":"Success","content":{"application/json":{"schema":{"type":"object","properties":{"success":{"type":"boolean"},"data":{"type":"object","properties":{"events":{"type":"array","items":{"type":"string"}},"categories":{"type":"object"}}}}}}}}}}}},"components":{"securitySchemes":{"bearerAuth":{"type":"http","scheme":"bearer","bearerFormat":"JWT","description":"Laravel Sanctum token (Bearer token)"},"apiKeyAuth":{"type":"apiKey","in":"header","name":"X-API-Key","description":"Developer API key for programmatic access. Use format: X-API-Key: {api_key}"}},"schemas":{"User":{"type":"object","properties":{"id":{"type":"integer"},"name":{"type":"string"},"email":{"type":"string","format":"email"},"tenant_id":{"type":"integer"}}},"Error":{"type":"object","properties":{"error":{"type":"string"},"message":{"type":"string"}}},"Property":{"type":"object","properties":{"id":{"type":"integer"},"name":{"type":"string"},"description":{"type":"string"},"address":{"type":"string"},"city":{"type":"string"},"state":{"type":"string"},"country":{"type":"string"},"postal_code":{"type":"string"},"property_type":{"type":"string"},"bedrooms":{"type":"integer"},"bathrooms":{"type":"integer"},"max_guests":{"type":"integer"},"nightly_rate":{"type":"number"},"is_active":{"type":"boolean"},"created_at":{"type":"string","format":"date-time"},"updated_at":{"type":"string","format":"date-time"}}},"PropertyCreate":{"type":"object","required":["name","address","city","country"],"properties":{"name":{"type":"string"},"description":{"type":"string"},"address":{"type":"string"},"city":{"type":"string"},"state":{"type":"string"},"country":{"type":"string"},"postal_code":{"type":"string"},"property_type":{"type":"string"},"bedrooms":{"type":"integer"},"bathrooms":{"type":"integer"},"max_guests":{"type":"integer"},"nightly_rate":{"type":"number"}}},"PropertyUpdate":{"type":"object","properties":{"name":{"type":"string"},"description":{"type":"string"},"address":{"type":"string"},"city":{"type":"string"},"state":{"type":"string"},"country":{"type":"string"},"postal_code":{"type":"string"},"property_type":{"type":"string"},"bedrooms":{"type":"integer"},"bathrooms":{"type":"integer"},"max_guests":{"type":"integer"},"nightly_rate":{"type":"number"},"is_active":{"type":"boolean"}}},"Availability":{"type":"object","properties":{"date":{"type":"string","format":"date"},"available":{"type":"boolean"},"rate":{"type":"number"}}},"Booking":{"type":"object","properties":{"id":{"type":"integer"},"property_id":{"type":"integer"},"guest_id":{"type":"integer"},"check_in_date":{"type":"string","format":"date"},"check_out_date":{"type":"string","format":"date"},"guests_count":{"type":"integer"},"nightly_rate":{"type":"number"},"total_amount":{"type":"number"},"status":{"type":"string","enum":["pending","confirmed","checked_in","checked_out","cancelled"]},"source":{"type":"string"},"created_at":{"type":"string","format":"date-time"},"updated_at":{"type":"string","format":"date-time"}}},"BookingCreate":{"type":"object","required":["property_id","check_in_date","check_out_date","guests_count","nightly_rate"],"properties":{"property_id":{"type":"integer"},"guest_id":{"type":"integer"},"guest_first_name":{"type":"string"},"guest_last_name":{"type":"string"},"guest_email":{"type":"string","format":"email"},"guest_phone":{"type":"string"},"check_in_date":{"type":"string","format":"date"},"check_out_date":{"type":"string","format":"date"},"guests_count":{"type":"integer"},"nightly_rate":{"type":"number"},"cleaning_fee":{"type":"number"},"service_fee":{"type":"number"},"taxes":{"type":"number"},"source":{"type":"string"},"special_requests":{"type":"string"}}},"BookingUpdate":{"type":"object","properties":{"check_in_date":{"type":"string","format":"date"},"check_out_date":{"type":"string","format":"date"},"guests_count":{"type":"integer"},"nightly_rate":{"type":"number"},"status":{"type":"string","enum":["pending","confirmed","checked_in","checked_out","cancelled"]},"special_requests":{"type":"string"}}},"Guest":{"type":"object","properties":{"id":{"type":"integer"},"first_name":{"type":"string"},"last_name":{"type":"string"},"email":{"type":"string","format":"email"},"phone":{"type":"string"},"address":{"type":"string"},"city":{"type":"string"},"country":{"type":"string"},"created_at":{"type":"string","format":"date-time"},"updated_at":{"type":"string","format":"date-time"}}},"GuestCreate":{"type":"object","required":["first_name","last_name","email"],"properties":{"first_name":{"type":"string"},"last_name":{"type":"string"},"email":{"type":"string","format":"email"},"phone":{"type":"string"},"address":{"type":"string"},"city":{"type":"string"},"country":{"type":"string"}}},"GuestUpdate":{"type":"object","properties":{"first_name":{"type":"string"},"last_name":{"type":"string"},"email":{"type":"string","format":"email"},"phone":{"type":"string"},"address":{"type":"string"},"city":{"type":"string"},"country":{"type":"string"}}},"ApiKey":{"type":"object","properties":{"id":{"type":"integer"},"name":{"type":"string"},"api_key":{"type":"string"},"is_active":{"type":"boolean"},"last_used_at":{"type":"string","format":"date-time","nullable":true},"expires_at":{"type":"string","format":"date-time","nullable":true}}},"ApiKeyWithSecret":{"allOf":[{"$ref":"#/components/schemas/ApiKey"},{"type":"object","properties":{"api_secret":{"type":"string"}}}]},"WebhookSubscription":{"type":"object","properties":{"id":{"type":"integer"},"name":{"type":"string"},"url":{"type":"string"},"events":{"type":"array","items":{"type":"string"}},"is_active":{"type":"boolean"},"secret":{"type":"string"},"timeout":{"type":"integer"},"retry_attempts":{"type":"integer"},"success_count":{"type":"integer"},"failure_count":{"type":"integer"},"last_triggered_at":{"type":"string","format":"date-time","nullable":true}}},"Conversation":{"type":"object","properties":{"id":{"type":"integer"},"guest_id":{"type":"integer"},"subject":{"type":"string"},"status":{"type":"string"},"created_at":{"type":"string","format":"date-time"}}},"Message":{"type":"object","properties":{"id":{"type":"integer"},"conversation_id":{"type":"integer"},"message":{"type":"string"},"created_at":{"type":"string","format":"date-time"}}},"Task":{"type":"object","properties":{"id":{"type":"integer"},"title":{"type":"string"},"description":{"type":"string"},"property_id":{"type":"integer"},"status":{"type":"string","enum":["pending","in_progress","completed","cancelled"]},"due_date":{"type":"string","format":"date-time","nullable":true},"created_at":{"type":"string","format":"date-time"}}}}}}
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "HomestayOS API",
+    "description": "API documentation for HomestayOS - A comprehensive property management system for homestays and vacation rentals. This API enables developers to build integrations, automate workflows, and access property management data programmatically.",
+    "version": "1.0.0",
+    "contact": {
+      "name": "HomestayOS Support",
+      "email": "homestayos.com@gmail.com"
+    },
+    "license": {
+      "name": "Proprietary"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:8000/api",
+      "description": "Production server"
+    },
+    {
+      "url": "http://localhost:8000/api",
+      "description": "Local development server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Authentication",
+      "description": "User authentication and authorization"
+    },
+    {
+      "name": "Properties",
+      "description": "Property management and operations"
+    },
+    {
+      "name": "Bookings",
+      "description": "Booking management and operations"
+    },
+    {
+      "name": "Guests",
+      "description": "Guest management and operations"
+    },
+    {
+      "name": "Calendar",
+      "description": "Calendar and availability management"
+    },
+    {
+      "name": "Analytics",
+      "description": "Analytics and reporting endpoints"
+    },
+    {
+      "name": "Conversations",
+      "description": "Message and conversation management"
+    },
+    {
+      "name": "Tasks",
+      "description": "Task and automation management"
+    },
+    {
+      "name": "Developer",
+      "description": "Developer API key and webhook management"
+    }
+  ],
+  "paths": {
+    "/login": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Authenticate user",
+        "description": "Login with email and password to receive an authentication token",
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "password"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "user@example.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password",
+                    "example": "password123"
+                  },
+                  "tenant_slug": {
+                    "type": "string",
+                    "example": "my-company"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Authentication successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string"
+                    },
+                    "user": {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/user": {
+      "get": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Get current user",
+        "description": "Get the authenticated user's information",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/properties": {
+      "get": {
+        "tags": [
+          "Properties"
+        ],
+        "summary": "List properties",
+        "description": "Get all properties for the authenticated tenant with optional filtering",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "active",
+                "inactive"
+              ]
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 15
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of properties",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Property"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Properties"
+        ],
+        "summary": "Create property",
+        "description": "Create a new property",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PropertyCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Property created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Property"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/properties/{id}": {
+      "get": {
+        "tags": [
+          "Properties"
+        ],
+        "summary": "Get property",
+        "description": "Get a specific property by ID",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Property details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Property"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Properties"
+        ],
+        "summary": "Update property",
+        "description": "Update an existing property",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PropertyUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Property updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Property"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Properties"
+        ],
+        "summary": "Delete property",
+        "description": "Delete a property",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Property deleted"
+          }
+        }
+      }
+    },
+    "/properties/{property}/availabilities": {
+      "get": {
+        "tags": [
+          "Properties",
+          "Calendar"
+        ],
+        "summary": "Get property availability",
+        "description": "Get availability calendar for a property",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "property",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Availability data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Availability"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bookings": {
+      "get": {
+        "tags": [
+          "Bookings"
+        ],
+        "summary": "List bookings",
+        "description": "Get all bookings with optional filtering",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "pending",
+                "confirmed",
+                "checked_in",
+                "checked_out",
+                "cancelled"
+              ]
+            }
+          },
+          {
+            "name": "property_id",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "upcoming",
+                "past",
+                "active"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of bookings",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Booking"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Bookings"
+        ],
+        "summary": "Create booking",
+        "description": "Create a new booking",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookingCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Booking created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Booking"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bookings/{id}": {
+      "get": {
+        "tags": [
+          "Bookings"
+        ],
+        "summary": "Get booking",
+        "description": "Get a specific booking by ID",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Booking details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Booking"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Bookings"
+        ],
+        "summary": "Update booking",
+        "description": "Update an existing booking",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookingUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Booking updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Booking"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bookings/{id}/cancel": {
+      "post": {
+        "tags": [
+          "Bookings"
+        ],
+        "summary": "Cancel booking",
+        "description": "Cancel a booking",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Booking cancelled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Booking"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/guests": {
+      "get": {
+        "tags": [
+          "Guests"
+        ],
+        "summary": "List guests",
+        "description": "Get all guests with optional filtering",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 15
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of guests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Guest"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Guests"
+        ],
+        "summary": "Create guest",
+        "description": "Create a new guest",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GuestCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Guest created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Guest"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/guests/{id}": {
+      "get": {
+        "tags": [
+          "Guests"
+        ],
+        "summary": "Get guest",
+        "description": "Get a specific guest by ID",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Guest details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Guest"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Guests"
+        ],
+        "summary": "Update guest",
+        "description": "Update an existing guest",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GuestUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Guest updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Guest"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/guests/stats": {
+      "get": {
+        "tags": [
+          "Guests",
+          "Analytics"
+        ],
+        "summary": "Get guest statistics",
+        "description": "Get statistics about guests",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Guest statistics",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "total_guests": {
+                      "type": "integer"
+                    },
+                    "new_this_month": {
+                      "type": "integer"
+                    },
+                    "repeat_guests": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/properties/{property}/calendar-url": {
+      "get": {
+        "tags": [
+          "Calendar"
+        ],
+        "summary": "Get calendar sync URL",
+        "description": "Get iCal calendar URL for syncing with external calendar applications",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "property",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Calendar URL",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": "string",
+                      "format": "uri"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/analytics/revenue": {
+      "get": {
+        "tags": [
+          "Analytics"
+        ],
+        "summary": "Get revenue analytics",
+        "description": "Get revenue analytics with date range filtering",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "start_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "property_id",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Revenue analytics",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "total_revenue": {
+                      "type": "number"
+                    },
+                    "period_revenue": {
+                      "type": "number"
+                    },
+                    "by_property": {
+                      "type": "array"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/analytics/occupancy": {
+      "get": {
+        "tags": [
+          "Analytics"
+        ],
+        "summary": "Get occupancy analytics",
+        "description": "Get occupancy rate analytics",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "start_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Occupancy analytics",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "occupancy_rate": {
+                      "type": "number"
+                    },
+                    "booked_nights": {
+                      "type": "integer"
+                    },
+                    "available_nights": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/conversations": {
+      "get": {
+        "tags": [
+          "Conversations"
+        ],
+        "summary": "List conversations",
+        "description": "Get all conversations/messages",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 15
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of conversations",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Conversation"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Conversations"
+        ],
+        "summary": "Create conversation",
+        "description": "Create a new conversation",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "guest_id",
+                  "subject",
+                  "message"
+                ],
+                "properties": {
+                  "guest_id": {
+                    "type": "integer"
+                  },
+                  "subject": {
+                    "type": "string"
+                  },
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Conversation created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Conversation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/conversations/{id}/messages": {
+      "post": {
+        "tags": [
+          "Conversations"
+        ],
+        "summary": "Send message",
+        "description": "Send a message in a conversation",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "message"
+                ],
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Message sent",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "$ref": "#/components/schemas/Message"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tasks": {
+      "get": {
+        "tags": [
+          "Tasks"
+        ],
+        "summary": "List tasks",
+        "description": "Get all tasks with optional filtering",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "pending",
+                "in_progress",
+                "completed",
+                "cancelled"
+              ]
+            }
+          },
+          {
+            "name": "property_id",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of tasks",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Task"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Tasks"
+        ],
+        "summary": "Create task",
+        "description": "Create a new task",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "title",
+                  "property_id"
+                ],
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "property_id": {
+                    "type": "integer"
+                  },
+                  "assigned_to": {
+                    "type": "integer"
+                  },
+                  "due_date": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Task created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Task"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tasks/{id}/status": {
+      "put": {
+        "tags": [
+          "Tasks"
+        ],
+        "summary": "Update task status",
+        "description": "Update the status of a task",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "status"
+                ],
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "pending",
+                      "in_progress",
+                      "completed",
+                      "cancelled"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Task status updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Task"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/developer/api-keys": {
+      "get": {
+        "tags": [
+          "Developer"
+        ],
+        "summary": "List API keys",
+        "description": "Get all API keys for the authenticated tenant",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ApiKey"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Developer"
+        ],
+        "summary": "Create API key",
+        "description": "Create a new API key for developer access",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "My Smart Key Integration"
+                  },
+                  "expires_at": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "API key created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/ApiKeyWithSecret"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/developer/webhook-subscriptions": {
+      "get": {
+        "tags": [
+          "Developer"
+        ],
+        "summary": "List webhook subscriptions",
+        "description": "Get all webhook subscriptions for the authenticated tenant",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/WebhookSubscription"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Developer"
+        ],
+        "summary": "Create webhook subscription",
+        "description": "Subscribe to webhook events",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "developer_api_key_id",
+                  "name",
+                  "url",
+                  "events"
+                ],
+                "properties": {
+                  "developer_api_key_id": {
+                    "type": "integer"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "Smart Key Automation"
+                  },
+                  "url": {
+                    "type": "string",
+                    "format": "uri",
+                    "example": "https://example.com/webhooks/smart-key"
+                  },
+                  "events": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "example": [
+                      "booking.check_in",
+                      "booking.check_out"
+                    ]
+                  },
+                  "secret": {
+                    "type": "string"
+                  },
+                  "timeout": {
+                    "type": "integer",
+                    "default": 30
+                  },
+                  "retry_attempts": {
+                    "type": "integer",
+                    "default": 3
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Webhook subscription created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/WebhookSubscription"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/developer/webhook-subscriptions/available-events": {
+      "get": {
+        "tags": [
+          "Developer"
+        ],
+        "summary": "Get available webhook events",
+        "description": "List all available webhook events that can be subscribed to",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "events": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "categories": {
+                          "type": "object"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Laravel Sanctum token (Bearer token)"
+      },
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-API-Key",
+        "description": "Developer API key for programmatic access. Use format: X-API-Key: {api_key}"
+      }
+    },
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "tenant_id": {
+            "type": "integer"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "Property": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "postal_code": {
+            "type": "string"
+          },
+          "property_type": {
+            "type": "string"
+          },
+          "bedrooms": {
+            "type": "integer"
+          },
+          "bathrooms": {
+            "type": "integer"
+          },
+          "max_guests": {
+            "type": "integer"
+          },
+          "nightly_rate": {
+            "type": "number"
+          },
+          "is_active": {
+            "type": "boolean"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "PropertyCreate": {
+        "type": "object",
+        "required": [
+          "name",
+          "address",
+          "city",
+          "country"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "postal_code": {
+            "type": "string"
+          },
+          "property_type": {
+            "type": "string"
+          },
+          "bedrooms": {
+            "type": "integer"
+          },
+          "bathrooms": {
+            "type": "integer"
+          },
+          "max_guests": {
+            "type": "integer"
+          },
+          "nightly_rate": {
+            "type": "number"
+          }
+        }
+      },
+      "PropertyUpdate": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "postal_code": {
+            "type": "string"
+          },
+          "property_type": {
+            "type": "string"
+          },
+          "bedrooms": {
+            "type": "integer"
+          },
+          "bathrooms": {
+            "type": "integer"
+          },
+          "max_guests": {
+            "type": "integer"
+          },
+          "nightly_rate": {
+            "type": "number"
+          },
+          "is_active": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Availability": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "available": {
+            "type": "boolean"
+          },
+          "rate": {
+            "type": "number"
+          }
+        }
+      },
+      "Booking": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "property_id": {
+            "type": "integer"
+          },
+          "guest_id": {
+            "type": "integer"
+          },
+          "check_in_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "check_out_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "guests_count": {
+            "type": "integer"
+          },
+          "nightly_rate": {
+            "type": "number"
+          },
+          "total_amount": {
+            "type": "number"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "confirmed",
+              "checked_in",
+              "checked_out",
+              "cancelled"
+            ]
+          },
+          "source": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "BookingCreate": {
+        "type": "object",
+        "required": [
+          "property_id",
+          "check_in_date",
+          "check_out_date",
+          "guests_count",
+          "nightly_rate"
+        ],
+        "properties": {
+          "property_id": {
+            "type": "integer"
+          },
+          "guest_id": {
+            "type": "integer"
+          },
+          "guest_first_name": {
+            "type": "string"
+          },
+          "guest_last_name": {
+            "type": "string"
+          },
+          "guest_email": {
+            "type": "string",
+            "format": "email"
+          },
+          "guest_phone": {
+            "type": "string"
+          },
+          "check_in_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "check_out_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "guests_count": {
+            "type": "integer"
+          },
+          "nightly_rate": {
+            "type": "number"
+          },
+          "cleaning_fee": {
+            "type": "number"
+          },
+          "service_fee": {
+            "type": "number"
+          },
+          "taxes": {
+            "type": "number"
+          },
+          "source": {
+            "type": "string"
+          },
+          "special_requests": {
+            "type": "string"
+          }
+        }
+      },
+      "BookingUpdate": {
+        "type": "object",
+        "properties": {
+          "check_in_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "check_out_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "guests_count": {
+            "type": "integer"
+          },
+          "nightly_rate": {
+            "type": "number"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "confirmed",
+              "checked_in",
+              "checked_out",
+              "cancelled"
+            ]
+          },
+          "special_requests": {
+            "type": "string"
+          }
+        }
+      },
+      "Guest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "first_name": {
+            "type": "string"
+          },
+          "last_name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "GuestCreate": {
+        "type": "object",
+        "required": [
+          "first_name",
+          "last_name",
+          "email"
+        ],
+        "properties": {
+          "first_name": {
+            "type": "string"
+          },
+          "last_name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          }
+        }
+      },
+      "GuestUpdate": {
+        "type": "object",
+        "properties": {
+          "first_name": {
+            "type": "string"
+          },
+          "last_name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          }
+        }
+      },
+      "ApiKey": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "api_key": {
+            "type": "string"
+          },
+          "is_active": {
+            "type": "boolean"
+          },
+          "last_used_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        }
+      },
+      "ApiKeyWithSecret": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ApiKey"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "api_secret": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "WebhookSubscription": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "events": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "is_active": {
+            "type": "boolean"
+          },
+          "secret": {
+            "type": "string"
+          },
+          "timeout": {
+            "type": "integer"
+          },
+          "retry_attempts": {
+            "type": "integer"
+          },
+          "success_count": {
+            "type": "integer"
+          },
+          "failure_count": {
+            "type": "integer"
+          },
+          "last_triggered_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        }
+      },
+      "Conversation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "guest_id": {
+            "type": "integer"
+          },
+          "subject": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Message": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "conversation_id": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Task": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "property_id": {
+            "type": "integer"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "in_progress",
+              "completed",
+              "cancelled"
+            ]
+          },
+          "due_date": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    }
+  }
+}

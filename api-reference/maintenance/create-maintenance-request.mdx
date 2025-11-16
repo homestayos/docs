@@ -1,0 +1,173 @@
+---
+title: 'Create Maintenance Request'
+api: 'POST /maintenance-requests'
+description: 'Create a new maintenance request'
+---
+
+## Request
+
+Create a new maintenance request for a property.
+
+<ParamField body="title" type="string" required>
+  Request title
+</ParamField>
+
+<ParamField body="description" type="string">
+  Request description
+</ParamField>
+
+<ParamField body="category" type="string">
+  Request category (e.g., Plumbing, Electrical, HVAC)
+</ParamField>
+
+<ParamField body="status" type="string" required enum={['pending', 'in_progress', 'completed', 'cancelled']}>
+  Initial status
+</ParamField>
+
+<ParamField body="priority" type="string" required enum={['low', 'normal', 'high', 'urgent']}>
+  Request priority
+</ParamField>
+
+<ParamField body="property_id" type="integer">
+  Associated property ID
+</ParamField>
+
+<ParamField body="assigned_to_id" type="integer">
+  User ID to assign the request to
+</ParamField>
+
+<ParamField body="scheduled_date" type="string" format="date">
+  Scheduled date for maintenance
+</ParamField>
+
+<ParamField body="estimated_cost" type="number">
+  Estimated cost
+</ParamField>
+
+<ParamField body="actual_cost" type="number">
+  Actual cost (if already known)
+</ParamField>
+
+<ParamField body="metadata" type="object">
+  Additional metadata as key-value pairs
+</ParamField>
+
+## Response
+
+Returns the created maintenance request.
+
+<ResponseField name="message" type="string">
+  Success message
+</ResponseField>
+
+<ResponseField name="maintenance_request" type="object">
+  The created maintenance request object
+</ResponseField>
+
+## Example Request
+
+<CodeGroup>
+
+```bash cURL
+curl -X POST http://localhost:8000/api/maintenance-requests \
+  -H "Authorization: Bearer {your_token}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Fix leaking faucet",
+    "description": "Kitchen faucet is leaking and needs repair",
+    "category": "Plumbing",
+    "status": "pending",
+    "priority": "high",
+    "property_id": 5,
+    "assigned_to_id": 2,
+    "scheduled_date": "2024-01-15",
+    "estimated_cost": 150.00
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch('http://localhost:8000/api/maintenance-requests', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer {your_token}',
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    title: 'Fix leaking faucet',
+    description: 'Kitchen faucet is leaking and needs repair',
+    category: 'Plumbing',
+    status: 'pending',
+    priority: 'high',
+    property_id: 5,
+    assigned_to_id: 2,
+    scheduled_date: '2024-01-15',
+    estimated_cost: 150.00,
+  }),
+});
+
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.post(
+    'http://localhost:8000/api/maintenance-requests',
+    headers={
+        'Authorization': 'Bearer {your_token}',
+        'Content-Type': 'application/json',
+    },
+    json={
+        'title': 'Fix leaking faucet',
+        'description': 'Kitchen faucet is leaking and needs repair',
+        'category': 'Plumbing',
+        'status': 'pending',
+        'priority': 'high',
+        'property_id': 5,
+        'assigned_to_id': 2,
+        'scheduled_date': '2024-01-15',
+        'estimated_cost': 150.00,
+    }
+)
+
+data = response.json()
+```
+
+</CodeGroup>
+
+## Example Response
+
+```json
+{
+  "message": "Maintenance request created successfully",
+  "maintenance_request": {
+    "id": 1,
+    "title": "Fix leaking faucet",
+    "description": "Kitchen faucet is leaking and needs repair",
+    "category": "Plumbing",
+    "status": "pending",
+    "priority": "high",
+    "property_id": 5,
+    "assigned_to_id": 2,
+    "scheduled_date": "2024-01-15",
+    "estimated_cost": 150.00,
+    "actual_cost": null,
+    "completed_at": null,
+    "property": {
+      "id": 5,
+      "name": "Beach House"
+    },
+    "assignedTo": {
+      "id": 2,
+      "name": "John Doe",
+      "email": "john@example.com"
+    },
+    "createdBy": {
+      "id": 1,
+      "name": "Jane Smith",
+      "email": "jane@example.com"
+    }
+  }
+}
+```
+

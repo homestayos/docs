@@ -1,0 +1,81 @@
+---
+title: 'Get Maintenance Request Statistics'
+api: 'GET /maintenance-requests/stats'
+description: 'Get statistics about maintenance requests'
+---
+
+## Request
+
+Retrieve statistics about maintenance requests for the authenticated tenant.
+
+## Response
+
+Returns maintenance request statistics.
+
+<ResponseField name="total" type="integer">
+  Total number of maintenance requests
+</ResponseField>
+
+<ResponseField name="pending" type="integer">
+  Number of pending requests
+</ResponseField>
+
+<ResponseField name="in_progress" type="integer">
+  Number of in-progress requests
+</ResponseField>
+
+<ResponseField name="completed" type="integer">
+  Number of completed requests
+</ResponseField>
+
+<ResponseField name="overdue" type="integer">
+  Number of overdue requests (scheduled date passed but not completed/cancelled)
+</ResponseField>
+
+## Example Request
+
+<CodeGroup>
+
+```bash cURL
+curl -X GET http://localhost:8000/api/maintenance-requests/stats \
+  -H "Authorization: Bearer {your_token}"
+```
+
+```javascript JavaScript
+const response = await fetch('http://localhost:8000/api/maintenance-requests/stats', {
+  method: 'GET',
+  headers: {
+    'Authorization': 'Bearer {your_token}',
+  },
+});
+
+const stats = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.get(
+    'http://localhost:8000/api/maintenance-requests/stats',
+    headers={
+        'Authorization': 'Bearer {your_token}',
+    }
+)
+
+stats = response.json()
+```
+
+</CodeGroup>
+
+## Example Response
+
+```json
+{
+  "total": 25,
+  "pending": 8,
+  "in_progress": 5,
+  "completed": 10,
+  "overdue": 2
+}
+```
+

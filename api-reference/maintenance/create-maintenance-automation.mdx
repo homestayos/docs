@@ -1,0 +1,186 @@
+---
+title: 'Create Maintenance Automation'
+api: 'POST /maintenance-automations'
+description: 'Create a new maintenance automation'
+---
+
+## Request
+
+Create a new maintenance automation that will automatically create maintenance requests based on triggers.
+
+<ParamField body="name" type="string" required>
+  Automation name
+</ParamField>
+
+<ParamField body="description" type="string">
+  Automation description
+</ParamField>
+
+<ParamField body="property_id" type="integer">
+  Associated property ID (null for global automations)
+</ParamField>
+
+<ParamField body="trigger" type="string" required enum={['after_booking_confirmed', 'before_checkin', 'after_checkin', 'before_checkout', 'after_checkout', 'guest_message', 'scheduled_maintenance', 'inspection_due', 'property_age_days', 'booking_count']}>
+  Trigger type
+</ParamField>
+
+<ParamField body="trigger_offset_hours" type="integer" default={0}>
+  Hours offset from trigger event
+</ParamField>
+
+<ParamField body="trigger_value" type="integer">
+  Additional trigger value (e.g., property age in days, booking count)
+</ParamField>
+
+<ParamField body="title" type="string" required>
+  Title for the generated maintenance request
+</ParamField>
+
+<ParamField body="request_description" type="string">
+  Description for the generated maintenance request
+</ParamField>
+
+<ParamField body="category" type="string">
+  Category for the generated maintenance request
+</ParamField>
+
+<ParamField body="priority" type="string" required enum={['low', 'normal', 'high', 'urgent']}>
+  Priority for the generated maintenance request
+</ParamField>
+
+<ParamField body="status" type="string" required enum={['pending', 'in_progress', 'completed', 'cancelled']}>
+  Initial status for the generated maintenance request
+</ParamField>
+
+<ParamField body="assigned_to_id" type="integer">
+  User ID to assign generated requests to
+</ParamField>
+
+<ParamField body="auto_assign" type="boolean" default={false}>
+  Whether to automatically assign requests
+</ParamField>
+
+<ParamField body="scheduled_date_offset_hours" type="integer" default={0}>
+  Hours offset for scheduled date
+</ParamField>
+
+<ParamField body="estimated_cost" type="number">
+  Estimated cost for generated requests
+</ParamField>
+
+<ParamField body="conditions" type="object">
+  Additional conditions for triggering the automation
+</ParamField>
+
+<ParamField body="is_active" type="boolean" default={true}>
+  Whether the automation is active
+</ParamField>
+
+## Response
+
+Returns the created maintenance automation.
+
+<ResponseField name="message" type="string">
+  Success message
+</ResponseField>
+
+<ResponseField name="automation" type="object">
+  The created maintenance automation object
+</ResponseField>
+
+## Example Request
+
+<CodeGroup>
+
+```bash cURL
+curl -X POST http://localhost:8000/api/maintenance-automations \
+  -H "Authorization: Bearer {your_token}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Post-checkout cleaning",
+    "description": "Automatically create cleaning task after checkout",
+    "property_id": 5,
+    "trigger": "after_checkout",
+    "trigger_offset_hours": 0,
+    "title": "Clean property after checkout",
+    "request_description": "Standard post-checkout cleaning",
+    "category": "Cleaning",
+    "priority": "normal",
+    "status": "pending",
+    "assigned_to_id": 2,
+    "is_active": true
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch('http://localhost:8000/api/maintenance-automations', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer {your_token}',
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    name: 'Post-checkout cleaning',
+    description: 'Automatically create cleaning task after checkout',
+    property_id: 5,
+    trigger: 'after_checkout',
+    trigger_offset_hours: 0,
+    title: 'Clean property after checkout',
+    request_description: 'Standard post-checkout cleaning',
+    category: 'Cleaning',
+    priority: 'normal',
+    status: 'pending',
+    assigned_to_id: 2,
+    is_active: true,
+  }),
+});
+
+const data = await response.json();
+```
+
+```python Python
+import requests
+
+response = requests.post(
+    'http://localhost:8000/api/maintenance-automations',
+    headers={
+        'Authorization': 'Bearer {your_token}',
+        'Content-Type': 'application/json',
+    },
+    json={
+        'name': 'Post-checkout cleaning',
+        'description': 'Automatically create cleaning task after checkout',
+        'property_id': 5,
+        'trigger': 'after_checkout',
+        'trigger_offset_hours': 0,
+        'title': 'Clean property after checkout',
+        'request_description': 'Standard post-checkout cleaning',
+        'category': 'Cleaning',
+        'priority': 'normal',
+        'status': 'pending',
+        'assigned_to_id': 2,
+        'is_active': True,
+    }
+)
+
+data = response.json()
+```
+
+</CodeGroup>
+
+## Example Response
+
+```json
+{
+  "message": "Maintenance automation created successfully",
+  "automation": {
+    "id": 1,
+    "name": "Post-checkout cleaning",
+    "description": "Automatically create cleaning task after checkout",
+    "property_id": 5,
+    "trigger": "after_checkout",
+    "is_active": true
+  }
+}
+```
+
