@@ -1,0 +1,1745 @@
+{
+	"info": {
+		"_postman_id": "homestayos-api-collection",
+		"name": "HomestayOS API",
+		"description": "Complete API collection for HomestayOS - A comprehensive property management system for homestays and vacation rentals. This collection includes all documented endpoints organized by category.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "homestayos-api"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"password123\",\n  \"tenant_slug\": \"my-company\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"login"
+							]
+						},
+						"description": "Authenticate user with email and password to receive an authentication token"
+					},
+					"response": [],
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.token) {",
+									"        pm.collectionVariables.set(\"auth_token\", jsonData.token);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					]
+				},
+				{
+					"name": "Get Current User",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/user",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user"
+							]
+						},
+						"description": "Get the authenticated user's information"
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\",\n  \"password_confirmation\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"register"
+							]
+						},
+						"description": "Register a new user account"
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/logout",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"logout"
+							]
+						},
+						"description": "Logout the authenticated user"
+					},
+					"response": []
+				},
+				{
+					"name": "Forgot Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"user@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/forgot-password",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"forgot-password"
+							]
+						},
+						"description": "Request a password reset email"
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token\": \"reset_token_here\",\n  \"email\": \"user@example.com\",\n  \"password\": \"newpassword123\",\n  \"password_confirmation\": \"newpassword123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/reset-password",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"reset-password"
+							]
+						},
+						"description": "Reset password with token from email"
+					},
+					"response": []
+				}
+			],
+			"description": "User authentication and authorization endpoints"
+		},
+		{
+			"name": "Dashboard",
+			"item": [
+				{
+					"name": "Get Dashboard",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/dashboard",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"dashboard"
+							]
+						},
+						"description": "Get dashboard data including statistics and overview"
+					},
+					"response": []
+				}
+			],
+			"description": "Dashboard endpoints"
+		},
+		{
+			"name": "Properties",
+			"item": [
+				{
+					"name": "List Properties",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/properties?status=active&search=&per_page=15",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"properties"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "active",
+									"description": "Filter by property status: active, inactive"
+								},
+								{
+									"key": "search",
+									"value": "",
+									"description": "Search properties by name, address, or description"
+								},
+								{
+									"key": "per_page",
+									"value": "15",
+									"description": "Number of results per page"
+								}
+							]
+						},
+						"description": "Get all properties for the authenticated tenant with optional filtering"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Property",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Beachfront Villa\",\n  \"description\": \"Beautiful beachfront property\",\n  \"address\": \"123 Ocean Drive\",\n  \"city\": \"Miami\",\n  \"state\": \"FL\",\n  \"country\": \"USA\",\n  \"postal_code\": \"33139\",\n  \"property_type\": \"Villa\",\n  \"bedrooms\": 3,\n  \"bathrooms\": 2,\n  \"max_guests\": 6,\n  \"nightly_rate\": 250.00\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/properties",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"properties"
+							]
+						},
+						"description": "Create a new property"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Property",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/properties/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"properties",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "Property ID"
+								}
+							]
+						},
+						"description": "Get a specific property by ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Property",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Updated Beachfront Villa\",\n  \"nightly_rate\": 275.00,\n  \"is_active\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/properties/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"properties",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "Property ID"
+								}
+							]
+						},
+						"description": "Update an existing property"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Property",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/properties/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"properties",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "Property ID"
+								}
+							]
+						},
+						"description": "Delete a property"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Property Availability",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/properties/:property/availabilities?start_date=2024-01-01&end_date=2024-12-31",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"properties",
+								":property",
+								"availabilities"
+							],
+							"query": [
+								{
+									"key": "start_date",
+									"value": "2024-01-01",
+									"description": "Start date (YYYY-MM-DD)"
+								},
+								{
+									"key": "end_date",
+									"value": "2024-12-31",
+									"description": "End date (YYYY-MM-DD)"
+								}
+							],
+							"variable": [
+								{
+									"key": "property",
+									"value": "1",
+									"description": "Property ID"
+								}
+							]
+						},
+						"description": "Get availability calendar for a property"
+					},
+					"response": []
+				}
+			],
+			"description": "Property management and operations"
+		},
+		{
+			"name": "Bookings",
+			"item": [
+				{
+					"name": "List Bookings",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/bookings?status=confirmed&property_id=&start_date=&end_date=&filter=",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"bookings"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "confirmed",
+									"description": "Filter by status: pending, confirmed, checked_in, checked_out, cancelled"
+								},
+								{
+									"key": "property_id",
+									"value": "",
+									"description": "Filter by property ID"
+								},
+								{
+									"key": "start_date",
+									"value": "",
+									"description": "Start date (YYYY-MM-DD)"
+								},
+								{
+									"key": "end_date",
+									"value": "",
+									"description": "End date (YYYY-MM-DD)"
+								},
+								{
+									"key": "filter",
+									"value": "",
+									"description": "Filter: upcoming, past, active"
+								}
+							]
+						},
+						"description": "Get all bookings with optional filtering"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Booking",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"property_id\": 1,\n  \"check_in_date\": \"2024-02-01\",\n  \"check_out_date\": \"2024-02-05\",\n  \"guests_count\": 2,\n  \"nightly_rate\": 250.00,\n  \"guest_first_name\": \"Jane\",\n  \"guest_last_name\": \"Smith\",\n  \"guest_email\": \"jane@example.com\",\n  \"guest_phone\": \"+1234567890\",\n  \"cleaning_fee\": 50.00,\n  \"service_fee\": 25.00,\n  \"taxes\": 100.00,\n  \"source\": \"direct\",\n  \"special_requests\": \"Late check-in requested\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/bookings",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"bookings"
+							]
+						},
+						"description": "Create a new booking"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Booking",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/bookings/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"bookings",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "Booking ID"
+								}
+							]
+						},
+						"description": "Get a specific booking by ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Booking",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"check_in_date\": \"2024-02-02\",\n  \"check_out_date\": \"2024-02-06\",\n  \"guests_count\": 3,\n  \"nightly_rate\": 275.00,\n  \"status\": \"confirmed\",\n  \"special_requests\": \"Updated request\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/bookings/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"bookings",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "Booking ID"
+								}
+							]
+						},
+						"description": "Update an existing booking"
+					},
+					"response": []
+				},
+				{
+					"name": "Cancel Booking",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/bookings/:id/cancel",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"bookings",
+								":id",
+								"cancel"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "Booking ID"
+								}
+							]
+						},
+						"description": "Cancel a booking"
+					},
+					"response": []
+				}
+			],
+			"description": "Booking management and operations"
+		},
+		{
+			"name": "Guests",
+			"item": [
+				{
+					"name": "List Guests",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/guests?search=&per_page=15",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"guests"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "",
+									"description": "Search guests by name or email"
+								},
+								{
+									"key": "per_page",
+									"value": "15",
+									"description": "Number of results per page"
+								}
+							]
+						},
+						"description": "Get all guests with optional filtering"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Guest",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"first_name\": \"John\",\n  \"last_name\": \"Doe\",\n  \"email\": \"john@example.com\",\n  \"phone\": \"+1234567890\",\n  \"address\": \"123 Main St\",\n  \"city\": \"New York\",\n  \"country\": \"USA\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/guests",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"guests"
+							]
+						},
+						"description": "Create a new guest"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Guest",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/guests/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"guests",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "Guest ID"
+								}
+							]
+						},
+						"description": "Get a specific guest by ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Guest",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"first_name\": \"John\",\n  \"last_name\": \"Doe\",\n  \"email\": \"john.updated@example.com\",\n  \"phone\": \"+1234567890\",\n  \"address\": \"456 Oak Ave\",\n  \"city\": \"Los Angeles\",\n  \"country\": \"USA\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/guests/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"guests",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "Guest ID"
+								}
+							]
+						},
+						"description": "Update an existing guest"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Guest Statistics",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/guests/stats",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"guests",
+								"stats"
+							]
+						},
+						"description": "Get statistics about guests"
+					},
+					"response": []
+				}
+			],
+			"description": "Guest management and operations"
+		},
+		{
+			"name": "Calendar",
+			"item": [
+				{
+					"name": "Get Calendar URL",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/properties/:property/calendar-url",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"properties",
+								":property",
+								"calendar-url"
+							],
+							"variable": [
+								{
+									"key": "property",
+									"value": "1",
+									"description": "Property ID"
+								}
+							]
+						},
+						"description": "Get iCal calendar URL for syncing with external calendar applications"
+					},
+					"response": []
+				}
+			],
+			"description": "Calendar and availability management"
+		},
+		{
+			"name": "Analytics",
+			"item": [
+				{
+					"name": "Get Revenue Analytics",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/analytics/revenue?start_date=2024-01-01&end_date=2024-12-31&property_id=",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"analytics",
+								"revenue"
+							],
+							"query": [
+								{
+									"key": "start_date",
+									"value": "2024-01-01",
+									"description": "Start date (YYYY-MM-DD)"
+								},
+								{
+									"key": "end_date",
+									"value": "2024-12-31",
+									"description": "End date (YYYY-MM-DD)"
+								},
+								{
+									"key": "property_id",
+									"value": "",
+									"description": "Filter by property ID (optional)"
+								}
+							]
+						},
+						"description": "Get revenue analytics with date range filtering"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Occupancy Analytics",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/analytics/occupancy?start_date=2024-01-01&end_date=2024-12-31",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"analytics",
+								"occupancy"
+							],
+							"query": [
+								{
+									"key": "start_date",
+									"value": "2024-01-01",
+									"description": "Start date (YYYY-MM-DD)"
+								},
+								{
+									"key": "end_date",
+									"value": "2024-12-31",
+									"description": "End date (YYYY-MM-DD)"
+								}
+							]
+						},
+						"description": "Get occupancy rate analytics"
+					},
+					"response": []
+				}
+			],
+			"description": "Analytics and reporting endpoints"
+		},
+		{
+			"name": "Conversations",
+			"item": [
+				{
+					"name": "List Conversations",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/conversations?status=&per_page=15",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"conversations"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "",
+									"description": "Filter by conversation status"
+								},
+								{
+									"key": "per_page",
+									"value": "15",
+									"description": "Number of results per page"
+								}
+							]
+						},
+						"description": "Get all conversations/messages"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Conversation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"guest_id\": 1,\n  \"subject\": \"Welcome to our property\",\n  \"message\": \"Thank you for your booking!\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/conversations",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"conversations"
+							]
+						},
+						"description": "Create a new conversation"
+					},
+					"response": []
+				},
+				{
+					"name": "Send Message",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"message\": \"This is a test message\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/conversations/:id/messages",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"conversations",
+								":id",
+								"messages"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "Conversation ID"
+								}
+							]
+						},
+						"description": "Send a message in a conversation"
+					},
+					"response": []
+				}
+			],
+			"description": "Message and conversation management"
+		},
+		{
+			"name": "Tasks",
+			"item": [
+				{
+					"name": "List Tasks",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/tasks?status=pending&property_id=",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"tasks"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "pending",
+									"description": "Filter by status: pending, in_progress, completed, cancelled"
+								},
+								{
+									"key": "property_id",
+									"value": "",
+									"description": "Filter by property ID"
+								}
+							]
+						},
+						"description": "Get all tasks with optional filtering"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Task",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Clean property after checkout\",\n  \"description\": \"Deep clean required\",\n  \"property_id\": 1,\n  \"assigned_to\": 2,\n  \"due_date\": \"2024-02-06T10:00:00Z\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/tasks",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"tasks"
+							]
+						},
+						"description": "Create a new task"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Task Status",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": \"completed\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/tasks/:id/status",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"tasks",
+								":id",
+								"status"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "Task ID"
+								}
+							]
+						},
+						"description": "Update the status of a task"
+					},
+					"response": []
+				}
+			],
+			"description": "Task and automation management"
+		},
+		{
+			"name": "Maintenance",
+			"item": [
+				{
+					"name": "List Maintenance Requests",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/maintenance-requests",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"maintenance-requests"
+							]
+						},
+						"description": "Get all maintenance requests"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Maintenance Request",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"property_id\": 1,\n  \"title\": \"Fix leaking faucet\",\n  \"description\": \"Kitchen faucet is leaking\",\n  \"priority\": \"high\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/maintenance-requests",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"maintenance-requests"
+							]
+						},
+						"description": "Create a new maintenance request"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Maintenance Request",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/maintenance-requests/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"maintenance-requests",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "Maintenance Request ID"
+								}
+							]
+						},
+						"description": "Get a specific maintenance request"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Maintenance Request",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Updated title\",\n  \"description\": \"Updated description\",\n  \"priority\": \"medium\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/maintenance-requests/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"maintenance-requests",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "Maintenance Request ID"
+								}
+							]
+						},
+						"description": "Update a maintenance request"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Maintenance Status",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": \"completed\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/maintenance-requests/:id/status",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"maintenance-requests",
+								":id",
+								"status"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "Maintenance Request ID"
+								}
+							]
+						},
+						"description": "Update the status of a maintenance request"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Maintenance Request",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/maintenance-requests/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"maintenance-requests",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "Maintenance Request ID"
+								}
+							]
+						},
+						"description": "Delete a maintenance request"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Maintenance Statistics",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/maintenance-requests/stats",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"maintenance-requests",
+								"stats"
+							]
+						},
+						"description": "Get maintenance statistics"
+					},
+					"response": []
+				},
+				{
+					"name": "List Maintenance Automations",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/maintenance-automations",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"maintenance-automations"
+							]
+						},
+						"description": "Get all maintenance automations"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Maintenance Automation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Auto-create cleaning task\",\n  \"trigger\": \"booking.checkout\",\n  \"action\": \"create_task\",\n  \"config\": {\n    \"task_title\": \"Clean property\",\n    \"property_id\": \"{{property_id}}\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/maintenance-automations",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"maintenance-automations"
+							]
+						},
+						"description": "Create a new maintenance automation"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Maintenance Automation",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/maintenance-automations/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"maintenance-automations",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "Automation ID"
+								}
+							]
+						},
+						"description": "Get a specific maintenance automation"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Maintenance Automation",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Updated automation\",\n  \"is_active\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/maintenance-automations/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"maintenance-automations",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "Automation ID"
+								}
+							]
+						},
+						"description": "Update a maintenance automation"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Maintenance Automation",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/maintenance-automations/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"maintenance-automations",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "Automation ID"
+								}
+							]
+						},
+						"description": "Delete a maintenance automation"
+					},
+					"response": []
+				}
+			],
+			"description": "Maintenance request and automation management"
+		},
+		{
+			"name": "Developer",
+			"item": [
+				{
+					"name": "List API Keys",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/developer/api-keys",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"developer",
+								"api-keys"
+							]
+						},
+						"description": "Get all API keys for the authenticated tenant"
+					},
+					"response": []
+				},
+				{
+					"name": "Create API Key",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"My Smart Key Integration\",\n  \"expires_at\": \"2025-12-31T23:59:59Z\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/developer/api-keys",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"developer",
+								"api-keys"
+							]
+						},
+						"description": "Create a new API key for developer access"
+					},
+					"response": []
+				},
+				{
+					"name": "List Webhook Subscriptions",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/developer/webhook-subscriptions",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"developer",
+								"webhook-subscriptions"
+							]
+						},
+						"description": "Get all webhook subscriptions for the authenticated tenant"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Webhook Subscription",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"developer_api_key_id\": 1,\n  \"name\": \"Smart Key Automation\",\n  \"url\": \"https://example.com/webhooks/smart-key\",\n  \"events\": [\n    \"booking.check_in\",\n    \"booking.check_out\"\n  ],\n  \"secret\": \"your-webhook-secret\",\n  \"timeout\": 30,\n  \"retry_attempts\": 3\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/developer/webhook-subscriptions",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"developer",
+								"webhook-subscriptions"
+							]
+						},
+						"description": "Subscribe to webhook events"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Available Webhook Events",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/developer/webhook-subscriptions/available-events",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"developer",
+								"webhook-subscriptions",
+								"available-events"
+							]
+						},
+						"description": "List all available webhook events that can be subscribed to"
+					},
+					"response": []
+				}
+			],
+			"description": "Developer API key and webhook management"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://office.homestayos.com/api",
+			"type": "string"
+		},
+		{
+			"key": "auth_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "api_key",
+			"value": "",
+			"type": "string",
+			"description": "API Key for programmatic access (alternative to Bearer token)"
+		}
+	]
+}
+
